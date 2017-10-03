@@ -4,15 +4,21 @@ public class Cell {
 	
 	CellStatus status;
 	Boolean hasRock;
+	String name;
 	
 	public Cell(CellStatus status, Boolean hasRock){
 		this.status = status;
 		this.hasRock = hasRock;
 	}
 	
-	public boolean activated(){
-		return (this.status == CellStatus.pressurePad && this.hasRock == false);
+	public Cell(){
+		this.status = CellStatus.free;
+		this.hasRock = false;
+		this.name = "";
 	}
 	
+	public boolean isActivated(){
+		return (this.status == CellStatus.pressurePad && this.hasRock == false);
+	}
 	
 }

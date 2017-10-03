@@ -1,5 +1,5 @@
 package Grid;
 
 public enum CellStatus {
-	obstacle, pressurePad
+	obstacle, pressurePad, free
 }
