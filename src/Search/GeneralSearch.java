@@ -38,13 +38,17 @@ public class GeneralSearch {
 		nodes = new LinkedList<Node>();
 	}
 	
-	public void search(){
+	public Node search(){
 		Node initialNode = new Node(null, this.problem.getInitState(), 0, 0, "");
 		nodes.addFirst(initialNode);
 		while(!nodes.isEmpty()) {
 			Node node = nodes.pop();
+			if(problem.goalTest(node)) {
+				return node;
+			}
 			
 		}
+		return null;
 	}
 	
 }
