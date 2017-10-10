@@ -5,8 +5,24 @@ import Search.State;
 
 public class MyState extends State {
 
-	Cell currentPosition;
-	int unactivatedPads;
+	private Cell currentPosition;
+	private int unactivatedPads;
+
+	public Cell getCurrentPosition() {
+		return currentPosition;
+	}
+
+	public void setCurrentPosition(Cell currentPosition) {
+		this.currentPosition = currentPosition;
+	}
+
+	public int getUnactivatedPads() {
+		return unactivatedPads;
+	}
+
+	public void setUnactivatedPads(int unactivatedPads) {
+		this.unactivatedPads = unactivatedPads;
+	}
 
 	public MyState(Cell currentPosition, int unactivatedPads, Cell telePosition) {
 		this.currentPosition = currentPosition;

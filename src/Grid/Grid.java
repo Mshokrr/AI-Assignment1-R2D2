@@ -2,9 +2,33 @@ package Grid;
 
 public class Grid {
 
-	int width;
-	int height;
-	Cell[][] cells;
+	private int width;
+	private int height;
+	private Cell[][] cells;
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public Cell[][] getCells() {
+		return cells;
+	}
+
+	public void setCells(Cell[][] cells) {
+		this.cells = cells;
+	}
 
 	public Grid(int width, int height, int numberOfPads, int numberOfObstacles) {
 		this.width = width;

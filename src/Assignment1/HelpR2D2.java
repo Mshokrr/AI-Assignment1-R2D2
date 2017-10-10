@@ -6,28 +6,39 @@ import Search.Problem;
 import Search.State;
 
 public class HelpR2D2 extends Problem {
-	Cell telePosition;
-	
-	public HelpR2D2(String [] operators, State initState, State [] stateSpace, Cell telePosition) {
-		super.operators = operators;
-		super.initState = initState;
-		this.telePosition = telePosition;
-		//super.stateSpace?
+	private Cell telePosition;
+
+	public Cell getTelePosition() {
+		return telePosition;
 	}
-	public int pathCost(Node n){
-		
+
+	public void setTelePosition(Cell telePosition) {
+		this.telePosition = telePosition;
+	}
+
+	public HelpR2D2(String[] operators, State initState, State[] stateSpace, Cell telePosition) {
+		super.setOperators(operators);
+		super.setInitState(initState);
+		this.telePosition = telePosition;
+		// super.stateSpace?
+	}
+
+	public int pathCost(Node n) {
+
 		// return path cost later
 		return 0;
 	}
-	
-	public boolean goalTest(MyState state){
-		if(state.currentPosition.equals(this.telePosition)){ //comparing issue
+
+	@Override
+	public boolean goalTest(Node node) {
+		MyState state = (MyState) node.getCurrentState();
+		if (state.getCurrentPosition().equals(this.telePosition)) { // comparing issue
 			System.out.println("R2D2 on teleport cell!");
-			if(state.unactivatedPads == 0){
+			if (state.getUnactivatedPads() == 0) {
 				System.out.println("Goal success");
 				return true;
 			}
-			
+
 		}
 		return false;
 	}
