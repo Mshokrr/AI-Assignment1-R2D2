@@ -65,7 +65,7 @@ public class Grid {
 		for (int i = 0; i < this.width; i++) {
 			for (int j = 0; j < this.height; j++) {
 				Cell c = new Cell();
-				c.name = "R" + i + " " + "C" + j;
+				c.setName("R" + i + " " + "C" + j); 
 				this.cells[i][j] = c;
 			}
 		}
@@ -86,19 +86,19 @@ public class Grid {
 			int obstaclePositionX = (int) Math.floor(Math.random() * this.width);
 			int obstaclePositionY = (int) Math.floor(Math.random() * this.height);
 			System.out.println("=> Obstacle at: R" + obstaclePositionX + " C" + obstaclePositionY);
-			this.cells[obstaclePositionX][obstaclePositionY].status = CellStatus.obstacle;
+			this.cells[obstaclePositionX][obstaclePositionY].setStatus(CellStatus.obstacle);
 		}
 
 		for (int i = 0; i < numberOfPads; i++) {
 			int padPositionX = (int) Math.floor(Math.random() * this.width);
 			int padPositionY = (int) Math.floor(Math.random() * this.height);
-			while (this.cells[padPositionX][padPositionY].hasRock
-					|| !(this.cells[padPositionX][padPositionY].status == CellStatus.free)) {
+			while (this.cells[padPositionX][padPositionY].getHasRock()
+					|| !(this.cells[padPositionX][padPositionY].getStatus() == CellStatus.free)) {
 				padPositionX = (int) Math.floor(Math.random() * this.width);
 				padPositionY = (int) Math.floor(Math.random() * this.height);
 			}
 			System.out.println("=> Pad at: R" + padPositionX + " C" + padPositionY);
-			this.cells[padPositionX][padPositionY].status = CellStatus.pressurePad;
+			this.cells[padPositionX][padPositionY].setStatus( CellStatus.pressurePad);
 			int rockPositionX = (int) Math.floor(Math.random() * this.width);
 			int rockPositionY = (int) Math.floor(Math.random() * this.height);
 			// while (!(this.cells[rockPositionX][rockPositionY].status == CellStatus.free
@@ -122,13 +122,13 @@ public class Grid {
 		for (int i = 0; i < this.width; i++) {
 			System.out.println();
 			for (int j = 0; j < this.height; j++) {
-				if (this.cells[i][j].status == CellStatus.obstacle)
+				if (this.cells[i][j].getStatus() == CellStatus.obstacle)
 					System.out.print("|  o  ");
 				else {
-					if (this.cells[i][j].status == CellStatus.pressurePad)
+					if (this.cells[i][j].getStatus() == CellStatus.pressurePad)
 						System.out.print("|  p  ");
 					else {
-						if (this.cells[i][j].hasRock)
+						if (this.cells[i][j].getHasRock())
 							System.out.print("|  r  ");
 						else
 							System.out.print("|     ");
