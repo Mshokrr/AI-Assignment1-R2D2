@@ -5,6 +5,8 @@ public class Cell {
 	CellStatus status;
 	Boolean hasRock;
 	String name;
+	int x;
+	int y;
 	
 	public Cell(CellStatus status, Boolean hasRock){
 		this.status = status;
