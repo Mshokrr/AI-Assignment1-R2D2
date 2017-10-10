@@ -20,7 +20,7 @@ public class Cell {
 	}
 	
 	public boolean isActivated(){
-		return (this.status == CellStatus.pressurePad && this.hasRock == false);
+		return (this.status == CellStatus.pressurePad && this.hasRock == true);
 	}
 	
 }

@@ -2,8 +2,10 @@ package Search;
 
 public abstract class Problem {
 	
-	String [] operators;
-	State initState;
-	State [] stateSpace;
+	protected String [] operators;
+	protected State initState;
+	protected State [] stateSpace;
+	
+	
 	
 }
