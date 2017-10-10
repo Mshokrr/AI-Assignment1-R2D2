@@ -7,6 +7,15 @@ public class MyState extends State {
 
 	private Cell currentPosition;
 	private int unactivatedPads;
+	private Cell [] rocksPositions;
+
+	public Cell[] getRocksPositions() {
+		return rocksPositions;
+	}
+
+	public void setRocksPositions(Cell[] rocks) {
+		this.rocksPositions = rocks;
+	}
 
 	public Cell getCurrentPosition() {
 		return currentPosition;
