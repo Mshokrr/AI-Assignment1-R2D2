@@ -6,6 +6,11 @@ import Search.State;
 
 public class HelpR2D2 extends Problem {
 	
+	public HelpR2D2(String [] operators, State initState, State [] stateSpace) {
+		super.operators = operators;
+		super.initState = initState;
+		//super.stateSpace?
+	}
 	public static int pathCost(Node n){
 		
 		// return path cost later
