@@ -3,6 +3,7 @@ package Assignment1;
 import java.util.ArrayList;
 
 import Grid.Cell;
+import Grid.CellStatus;
 import Search.Node;
 import Search.Problem;
 import Search.State;
@@ -68,29 +69,123 @@ public class HelpR2D2 extends Problem {
 	}
 
 	@Override
-	public ArrayList<Node> Expand(Node node, String operator) {
-		switch (operator) {
-		case "UP": return up(node);
-		case "DOWN": return down(node);
-		case "LEFT": return left(node);
-		case "RIGHT": return right(node);
-		}
+	public ArrayList<Node> Expand(Node node) {
+
 		return null;
 	}
-	public ArrayList<Node> up(Node node) {
+
+	public Node up(Node node) {
 		MyState state = (MyState) node.getCurrentState();
-		Cell [] rocksPositions = state.getRocksPositions();
+		Cell[] rocksPositions = state.getRocksPositions();
 		Cell currentPosition = state.getCurrentPosition();
+		int unactivatedPads = state.getUnactivatedPads();
+		Cell [] padsPositions = this.getPadsPositions();
+		Cell [] obstaclesPostitions = this.getObstaclesPositions();
 		
+		// check if upper cell is a ceiling
+		if (currentPosition.getY() == 0)
+			return null;
+		
+		//get upper cell
+		Cell upperCell = new Cell();
+		
+		//check if upper cell is an obstacle
+		for(int i = 0; i < obstaclesPostitions.length; i++) {
+			if(obstaclesPostitions[i].getX() == currentPosition.getX()
+					&& obstaclesPostitions[i].getY() == currentPosition.getY() - 1) {
+				return null;
+			}
+		}
+		
+		//check if upper cell is a rock
+		int rockIndex = 0;
+		for (int i = 0; i < rocksPositions.length; i++) {
+			if (rocksPositions[i].getX() == currentPosition.getX() 
+					&& rocksPositions[i].getY() == currentPosition.getY() - 1) {
+				rockIndex = i;
+				upperCell.setHasRock(true);
+				upperCell.setX(rocksPositions[i].getX());
+				upperCell.setY(rocksPositions[i].getY());
+				//check if the rock is on pad
+				for(int j = 0; j < this.padsPositions.length; j++) {
+					if(padsPositions[i].getX() == currentPosition.getX()
+							&& padsPositions[i].getY() == currentPosition.getY() - 1) {
+						upperCell.setStatus(CellStatus.pressurePad);
+					}
+				}
+				break;
+			}
+		}
+		//for now if a rock is on a pad don't move it
+		if(upperCell.isActivated()) return null;
+		
+		//upper cell is a rock
+		if(upperCell.getHasRock()) {
+			
+			//check if second to upper cell is a ceiling
+			if(currentPosition.getY() == 1) return null;
+			
+			//get second to upper
+			Cell secondToUpper = new Cell();
+			
+			//check if second to upper is a rock
+			for(int i = 0; i < rocksPositions.length; i++) {
+				if (rocksPositions[i].getX() == currentPosition.getX() 
+						&& rocksPositions[i].getY() == currentPosition.getY() - 2) {
+					return null;
+				}
+			}
+			//check if second to upper is an obstacle
+			for(int i = 0; i < obstaclesPostitions.length; i++) {
+				if(obstaclesPostitions[i].getX() == currentPosition.getX()
+						&& obstaclesPostitions[i].getY() == currentPosition.getY() - 2) {
+					return null;
+				}
+			}
+			//check if second to upper is a pad
+			for(int i = 0; i < padsPositions.length; i++) {
+				if(padsPositions[i].getX() == currentPosition.getX()
+						&& padsPositions[i].getY() == currentPosition.getY() - 2) {
+					unactivatedPads -= 1; break;
+				}
+			}
+			
+			Cell newPosition = new Cell();
+			newPosition.setX(currentPosition.getX());
+			newPosition.setY(currentPosition.getY()-1);
+			rocksPositions[rockIndex].setY(rocksPositions[rockIndex].getY() - 1);
+			
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			
+			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "UP");
+			
+			return newNode;
+				
+		}
+		//upper cell is free
+		else {
+			Cell newPosition = new Cell();
+			newPosition.setX(currentPosition.getX());
+			newPosition.setY(currentPosition.getY()-1);
+			
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			
+			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "UP");
+			
+			return newNode;
+		}
+
+	}
+
+	public static Node down(Node node) {
 		return null;
 	}
-	public static ArrayList<Node> down(Node node) {
+
+	public static Node left(Node node) {
 		return null;
 	}
-	public static ArrayList<Node> left(Node node) {
-		return null;
-	}
-	public static ArrayList<Node> right(Node node) {
+
+	public static Node right(Node node) {
 		return null;
 	}
 }

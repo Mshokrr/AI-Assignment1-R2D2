@@ -10,7 +10,7 @@ public abstract class Problem {
 	
 	public abstract boolean goalTest(Node node);
 	
-	public abstract ArrayList<Node> Expand(Node node, String operator);
+	public abstract ArrayList<Node> Expand(Node node);
 
 	public String[] getOperators() {
 		return operators;
