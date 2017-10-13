@@ -145,7 +145,6 @@ public class HelpR2D2 extends Problem {
 			if(currentPosition.getY() == 1) return null;
 			
 			//get second to upper
-			Cell secondToUpper = new Cell();
 			
 			//check if second to upper is a rock
 			for(int i = 0; i < rocksPositions.length; i++) {
@@ -197,7 +196,103 @@ public class HelpR2D2 extends Problem {
 	}
 
 	public Node down(Node node) {
-		return null;
+		MyState state = (MyState) node.getCurrentState();
+		Cell[] rocksPositions = state.getRocksPositions();
+		Cell currentPosition = state.getCurrentPosition();
+		int unactivatedPads = state.getUnactivatedPads();
+		Cell [] padsPositions = this.getPadsPositions();
+		Cell [] obstaclesPostitions = this.getObstaclesPositions();
+		
+		// check if lower cell is a floor
+		if (currentPosition.getY() == this.getHeight() - 1) return null;
+		
+		//get lower cell
+		Cell lowerCell = new Cell();
+		
+		//check if lower cell is an obstacle
+		for(int i = 0; i < obstaclesPostitions.length; i++) {
+			if(obstaclesPostitions[i].getX() == currentPosition.getX()
+					&& obstaclesPostitions[i].getY() == currentPosition.getY() + 1) {
+					return null;
+			}
+		}
+		
+		//check if lower cell is a rock
+		int rockIndex = 0;
+		for (int i = 0; i < rocksPositions.length; i++) {
+			if (rocksPositions[i].getX() == currentPosition.getX() 
+					&& rocksPositions[i].getY() == currentPosition.getY() + 1) {
+				rockIndex = i;
+				lowerCell.setHasRock(true);
+				lowerCell.setX(rocksPositions[i].getX());
+				lowerCell.setY(rocksPositions[i].getY());
+				//check if the rock is on pad
+				for(int j = 0; j < this.padsPositions.length; j++) {
+					if(padsPositions[i].getX() == currentPosition.getX()
+							&& padsPositions[i].getY() == currentPosition.getY() + 1) {
+						lowerCell.setStatus(CellStatus.pressurePad);
+					}
+				}
+				break;
+			}
+		}
+		
+		//for now if a rock is on a pad don't move it
+		if(lowerCell.isActivated()) return null;
+		
+		//lower cell is a rock
+		if(lowerCell.getHasRock()) {
+			
+			//check if second to lower cell is a floor
+			if(currentPosition.getY() == this.getHeight() - 2) return null;
+			
+			//get second to lower
+			
+			//check if second to lower is a rock
+			for(int i = 0; i < rocksPositions.length; i++) {
+				if (rocksPositions[i].getX() == currentPosition.getX() 
+						&& rocksPositions[i].getY() == currentPosition.getY() + 2) {
+					return null;
+				}
+			}
+			//check if second to lower is an obstacle
+			for(int i = 0; i < obstaclesPostitions.length; i++) {
+				if(obstaclesPostitions[i].getX() == currentPosition.getX()
+						&& obstaclesPostitions[i].getY() == currentPosition.getY() + 2) {
+					return null;
+				}
+			}
+			//check if second to lower is a pad
+			for(int i = 0; i < padsPositions.length; i++) {
+				if(padsPositions[i].getX() == currentPosition.getX()
+						&& padsPositions[i].getY() == currentPosition.getY() + 2) {
+					unactivatedPads -= 1; break;
+				}
+			}
+			
+			Cell newPosition = new Cell();
+			newPosition.setX(currentPosition.getX());
+			newPosition.setY(currentPosition.getY()+1);
+			rocksPositions[rockIndex].setY(rocksPositions[rockIndex].getY() + 1);
+			
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			
+			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "DOWN");
+			
+			return newNode;
+				
+		}
+		else {
+			Cell newPosition = new Cell();
+			newPosition.setX(currentPosition.getX());
+			newPosition.setY(currentPosition.getY()+1);
+			
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			
+			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "DOWN");
+			
+			return newNode;
+		}
 	}
 
 	public Node left(Node node) {
@@ -207,49 +302,49 @@ public class HelpR2D2 extends Problem {
 	public Node right(Node node) {
 		return null;
 	}
-	public static void main(String[] args) {
-		Cell currentPosition = new Cell();
-		currentPosition.setX(1);
-		currentPosition.setY(2);
-		
-		Cell rockPosition = new Cell();
-		rockPosition.setX(0);
-		rockPosition.setY(1);
-		
-		Cell [] rockPositions = new Cell [1];
-		rockPositions[0] = rockPosition;
-		
-		MyState initState = new MyState(currentPosition, 1, rockPositions);
-		
-		Cell teleport = new Cell();
-		teleport.setX(2);
-		teleport.setY(2);
-		
-		Cell obstacle = new Cell();
-		obstacle.setX(2);
-		obstacle.setY(0);
-		
-		Cell [] obstacles = new Cell[1];
-		obstacles[0] = obstacle;
-		
-		Cell pad = new Cell();
-		pad.setX(0);
-		pad.setY(1);
-		
-		Cell [] pads = new Cell[1];
-		pads[0] = pad;
-		
-		String [] ops = new String [4];
-		MyState [] stateSpace = new MyState[4];
-		
-		HelpR2D2 problem = new HelpR2D2(ops, initState, stateSpace, teleport, obstacles, pads);
-		
-		Node node = new Node(null, initState, 0, 0, "UP");
-		Node x = problem.up(node);
-		
-		MyState newState = (MyState) x.getCurrentState();
-		
-		System.out.println(newState.getCurrentPosition().getY());
-		
-	}
+//	public static void main(String[] args) {
+//		Cell currentPosition = new Cell();
+//		currentPosition.setX(1);
+//		currentPosition.setY(2);
+//		
+//		Cell rockPosition = new Cell();
+//		rockPosition.setX(0);
+//		rockPosition.setY(1);
+//		
+//		Cell [] rockPositions = new Cell [1];
+//		rockPositions[0] = rockPosition;
+//		
+//		MyState initState = new MyState(currentPosition, 1, rockPositions);
+//		
+//		Cell teleport = new Cell();
+//		teleport.setX(2);
+//		teleport.setY(2);
+//		
+//		Cell obstacle = new Cell();
+//		obstacle.setX(2);
+//		obstacle.setY(0);
+//		
+//		Cell [] obstacles = new Cell[1];
+//		obstacles[0] = obstacle;
+//		
+//		Cell pad = new Cell();
+//		pad.setX(0);
+//		pad.setY(1);
+//		
+//		Cell [] pads = new Cell[1];
+//		pads[0] = pad;
+//		
+//		String [] ops = new String [4];
+//		MyState [] stateSpace = new MyState[4];
+//		
+//		HelpR2D2 problem = new HelpR2D2(ops, initState, stateSpace, teleport, obstacles, pads);
+//		
+//		Node node = new Node(null, initState, 0, 0, "UP");
+//		Node x = problem.up(node);
+//		
+//		MyState newState = (MyState) x.getCurrentState();
+//		
+//		System.out.println(newState.getCurrentPosition().getY());
+//		
+//	}
 }
