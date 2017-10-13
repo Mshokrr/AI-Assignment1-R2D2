@@ -396,7 +396,103 @@ public class HelpR2D2 extends Problem {
 	}
 
 	public Node right(Node node) {
-		return null;
+		MyState state = (MyState) node.getCurrentState();
+		Cell[] rocksPositions = state.getRocksPositions();
+		Cell currentPosition = state.getCurrentPosition();
+		int unactivatedPads = state.getUnactivatedPads();
+		Cell [] padsPositions = this.getPadsPositions();
+		Cell [] obstaclesPostitions = this.getObstaclesPositions();
+		
+		// check if right cell is a wall
+		if (currentPosition.getX() == this.getWidth() - 1) return null;
+		
+		//get right cell
+		Cell rightCell = new Cell();
+		
+		//check if right cell is an obstacle
+		for(int i = 0; i < obstaclesPostitions.length; i++) {
+			if(obstaclesPostitions[i].getY() == currentPosition.getY()
+					&& obstaclesPostitions[i].getX() == currentPosition.getX() + 1) {
+					return null;
+			}
+		}
+		
+		//check if right cell is a rock
+		int rockIndex = 0;
+		for (int i = 0; i < rocksPositions.length; i++) {
+			if (rocksPositions[i].getY() == currentPosition.getY() 
+					&& rocksPositions[i].getX() == currentPosition.getX() + 1) {
+				rockIndex = i;
+				rightCell.setHasRock(true);
+				rightCell.setX(rocksPositions[i].getX());
+				rightCell.setY(rocksPositions[i].getY());
+				//check if the rock is on pad
+				for(int j = 0; j < this.padsPositions.length; j++) {
+					if(padsPositions[i].getY() == currentPosition.getY()
+							&& padsPositions[i].getX() == currentPosition.getX() + 1) {
+						rightCell.setStatus(CellStatus.pressurePad);
+					}
+				}
+				break;
+			}
+		}
+		
+		//for now if a rock is on a pad don't move it
+		if(rightCell.isActivated()) return null;
+		
+		//right cell is a rock
+		if(rightCell.getHasRock()) {
+			
+			//check if second to right cell is a wall
+			if(currentPosition.getX() == this.getWidth() - 2) return null;
+			
+			//get second to right
+			
+			//check if second to right is a rock
+			for(int i = 0; i < rocksPositions.length; i++) {
+				if (rocksPositions[i].getY() == currentPosition.getY() 
+						&& rocksPositions[i].getX() == currentPosition.getX() + 2) {
+					return null;
+				}
+			}
+			//check if second to right is an obstacle
+			for(int i = 0; i < obstaclesPostitions.length; i++) {
+				if(obstaclesPostitions[i].getY() == currentPosition.getY()
+						&& obstaclesPostitions[i].getX() == currentPosition.getX() + 2) {
+					return null;
+				}
+			}
+			//check if second to right is a pad
+			for(int i = 0; i < padsPositions.length; i++) {
+				if(padsPositions[i].getY() == currentPosition.getY()
+						&& padsPositions[i].getX() == currentPosition.getX() + 2) {
+					unactivatedPads -= 1; break;
+				}
+			}
+			
+			Cell newPosition = new Cell();
+			newPosition.setX(currentPosition.getX()+1);
+			newPosition.setY(currentPosition.getY());
+			rocksPositions[rockIndex].setY(rocksPositions[rockIndex].getX() + 1);
+			
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			
+			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "RIGHT");
+			
+			return newNode;
+				
+		}
+		else {
+			Cell newPosition = new Cell();
+			newPosition.setX(currentPosition.getX()+1);
+			newPosition.setY(currentPosition.getY());
+			
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			
+			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "RIGHT");
+			
+			return newNode;
+		}
 	}
 //	public static void main(String[] args) {
 //		Cell currentPosition = new Cell();
