@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Grid.Cell;
 import Grid.CellStatus;
+import Grid.Grid;
 import Search.Node;
 import Search.Problem;
 import Search.State;
@@ -12,6 +13,24 @@ public class HelpR2D2 extends Problem {
 	private Cell telePosition;
 	private Cell[] obstaclesPositions;
 	private Cell[] padsPositions;
+    private int height;
+    private int width;
+    
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
 
 	public Cell getTelePosition() {
 		return telePosition;
@@ -177,15 +196,60 @@ public class HelpR2D2 extends Problem {
 
 	}
 
-	public static Node down(Node node) {
+	public Node down(Node node) {
 		return null;
 	}
 
-	public static Node left(Node node) {
+	public Node left(Node node) {
 		return null;
 	}
 
-	public static Node right(Node node) {
+	public Node right(Node node) {
 		return null;
+	}
+	public static void main(String[] args) {
+		Cell currentPosition = new Cell();
+		currentPosition.setX(1);
+		currentPosition.setY(2);
+		
+		Cell rockPosition = new Cell();
+		rockPosition.setX(0);
+		rockPosition.setY(1);
+		
+		Cell [] rockPositions = new Cell [1];
+		rockPositions[0] = rockPosition;
+		
+		MyState initState = new MyState(currentPosition, 1, rockPositions);
+		
+		Cell teleport = new Cell();
+		teleport.setX(2);
+		teleport.setY(2);
+		
+		Cell obstacle = new Cell();
+		obstacle.setX(2);
+		obstacle.setY(0);
+		
+		Cell [] obstacles = new Cell[1];
+		obstacles[0] = obstacle;
+		
+		Cell pad = new Cell();
+		pad.setX(0);
+		pad.setY(1);
+		
+		Cell [] pads = new Cell[1];
+		pads[0] = pad;
+		
+		String [] ops = new String [4];
+		MyState [] stateSpace = new MyState[4];
+		
+		HelpR2D2 problem = new HelpR2D2(ops, initState, stateSpace, teleport, obstacles, pads);
+		
+		Node node = new Node(null, initState, 0, 0, "UP");
+		Node x = problem.up(node);
+		
+		MyState newState = (MyState) x.getCurrentState();
+		
+		System.out.println(newState.getCurrentPosition().getY());
+		
 	}
 }

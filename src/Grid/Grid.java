@@ -101,13 +101,13 @@ public class Grid {
 			this.cells[padPositionX][padPositionY].setStatus( CellStatus.pressurePad);
 			int rockPositionX = (int) Math.floor(Math.random() * this.width);
 			int rockPositionY = (int) Math.floor(Math.random() * this.height);
-			// while (!(this.cells[rockPositionX][rockPositionY].status == CellStatus.free
-			// || !this.cells[rockPositionX][rockPositionY].hasRock)){
-			// rockPositionX = (int) Math.floor(Math.random()*this.width);
-			// rockPositionY = (int) Math.floor(Math.random()*this.height);
-			// }
-			// System.out.println("=> Rock at: R" + rockPositionX + " C" + rockPositionY);
-			// this.cells[rockPositionX][rockPositionY].hasRock = true;
+			 while (!(this.cells[rockPositionX][rockPositionY].getStatus() == CellStatus.free
+			 || !this.cells[rockPositionX][rockPositionY].getHasRock())){
+			 rockPositionX = (int) Math.floor(Math.random()*this.width);
+			 rockPositionY = (int) Math.floor(Math.random()*this.height);
+			 }
+			 System.out.println("=> Rock at: R" + rockPositionX + " C" + rockPositionY);
+			 this.cells[rockPositionX][rockPositionY].setHasRock(true);
 		}
 
 		System.out.println("========\n\nThe Grid:\n");
