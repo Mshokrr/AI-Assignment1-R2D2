@@ -75,7 +75,8 @@ public class HelpR2D2 extends Problem {
 	@Override
 	public boolean goalTest(Node node) {
 		MyState state = (MyState) node.getCurrentState();
-		if (state.getCurrentPosition().equals(this.telePosition)) { // comparing
+		if (state.getCurrentPosition().getX() == this.getTelePosition().getX() 
+				&& state.getCurrentPosition().getY() == this.getTelePosition().getY()) { // comparing
 																	// issue
 			System.out.println("R2D2 on teleport cell!");
 			if (state.getUnactivatedPads() == 0) {
@@ -89,8 +90,21 @@ public class HelpR2D2 extends Problem {
 
 	@Override
 	public ArrayList<Node> Expand(Node node) {
-
-		return null;
+		ArrayList<Node> result = new ArrayList<Node>();
+		
+		Node up = this.up(node);
+		if(up != null) result.add(up);
+		
+		Node down = this.down(node);
+		if(down != null) result.add(down);
+		
+		Node right = this.right(node);
+		if(right != null) result.add(right);
+		
+		Node left = this.left(node);
+		if(left != null) result.add(left);
+		
+		return result;
 	}
 
 	public Node up(Node node) {
