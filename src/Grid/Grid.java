@@ -1,10 +1,14 @@
 package Grid;
 
+import java.util.ArrayList;
+
 public class Grid {
 
 	private int width;
 	private int height;
 	private Cell[][] cells;
+	private Cell agentPosition;
+	private Cell teleportPosition;
 
 	public int getWidth() {
 		return width;
@@ -47,13 +51,13 @@ public class Grid {
 
 		// Initialization Constraints
 
-		if (this.width < 6) {
-			System.out.println("=> Width should be a minimum of 6, auto-initializing to 6");
-			this.width = 6;
+		if (this.width < 3) {
+			System.out.println("=> Width should be a minimum of 3, auto-initializing to 3");
+			this.width = 3;
 		}
-		if (this.height < 6) {
-			System.out.println("=> Height should be a minimum of 6, auto-initializing to 6");
-			this.height = 6;
+		if (this.height < 3) {
+			System.out.println("=> Height should be a minimum of 3, auto-initializing to 3");
+			this.height = 3;
 		}
 
 		//
@@ -65,6 +69,8 @@ public class Grid {
 		for (int i = 0; i < this.width; i++) {
 			for (int j = 0; j < this.height; j++) {
 				Cell c = new Cell();
+				c.setX(i);
+				c.setY(j);
 				c.setName("R" + i + " " + "C" + j); 
 				this.cells[i][j] = c;
 			}
@@ -72,21 +78,33 @@ public class Grid {
 
 		// Initializing Obstacles, Pads and Rocks
 
-		while ((this.width * this.height) < (numberOfPads / 7)) {
+		while (((this.width * this.height)/7) < numberOfPads) {
 			numberOfPads /= 2;
 		}
-		while ((this.width * this.height) < (numberOfObstacles / 7)) {
+		while (((this.width * this.height)/7) < numberOfObstacles) {
 			numberOfObstacles /= 2;
 		}
+		
+		// Initializing Agent position
+		
+		this.agentPosition = cells[(int)(Math.random()*this.width)][(int)(Math.random()*height)];
+		System.out.println("=> Initializing agent at " + this.agentPosition.getName());
+		
+		int teleportPositionX = (int)(Math.random()*this.width);
+		int teleportPositionY = (int)(Math.random()*this.height);
+		this.cells[teleportPositionX][teleportPositionY].setStatus(CellStatus.teleport);
+		System.out.println("=> Initializing teleport position at " + this.cells[teleportPositionX][teleportPositionY].getName());
 
 		System.out.println("=> Initializing with " + numberOfObstacles + " obstacles");
 		System.out.println("=> Initializing with " + numberOfObstacles + " pads and rocks");
-
+		
 		for (int i = 0; i < numberOfObstacles; i++) {
 			int obstaclePositionX = (int) Math.floor(Math.random() * this.width);
 			int obstaclePositionY = (int) Math.floor(Math.random() * this.height);
 			System.out.println("=> Obstacle at: R" + obstaclePositionX + " C" + obstaclePositionY);
-			this.cells[obstaclePositionX][obstaclePositionY].setStatus(CellStatus.obstacle);
+			if (!(this.agentPosition.getX() == obstaclePositionX && this.agentPosition.getY() == obstaclePositionY)
+					|| !(this.cells[obstaclePositionX][obstaclePositionY].getStatus() == CellStatus.free))
+				this.cells[obstaclePositionX][obstaclePositionY].setStatus(CellStatus.obstacle);
 		}
 
 		for (int i = 0; i < numberOfPads; i++) {
@@ -98,20 +116,68 @@ public class Grid {
 				padPositionY = (int) Math.floor(Math.random() * this.height);
 			}
 			System.out.println("=> Pad at: R" + padPositionX + " C" + padPositionY);
-			this.cells[padPositionX][padPositionY].setStatus( CellStatus.pressurePad);
+			this.cells[padPositionX][padPositionY].setStatus(CellStatus.pressurePad);
 			int rockPositionX = (int) Math.floor(Math.random() * this.width);
 			int rockPositionY = (int) Math.floor(Math.random() * this.height);
-			// while (!(this.cells[rockPositionX][rockPositionY].status == CellStatus.free
-			// || !this.cells[rockPositionX][rockPositionY].hasRock)){
-			// rockPositionX = (int) Math.floor(Math.random()*this.width);
-			// rockPositionY = (int) Math.floor(Math.random()*this.height);
-			// }
-			// System.out.println("=> Rock at: R" + rockPositionX + " C" + rockPositionY);
-			// this.cells[rockPositionX][rockPositionY].hasRock = true;
+			while (this.cells[rockPositionX][rockPositionY].getHasRock()
+					|| !(this.cells[rockPositionX][rockPositionY].getStatus() == CellStatus.free)) {
+				rockPositionX = (int) Math.floor(Math.random() * this.width);
+				rockPositionY = (int) Math.floor(Math.random() * this.height);
+			}
+			 System.out.println("=> Rock at: R" + rockPositionX + " C" + rockPositionY);
+			 this.cells[rockPositionX][rockPositionY].setHasRock(true); 
 		}
 
 		System.out.println("========\n\nThe Grid:\n");
 		this.displayGrid();
+	}
+	
+	public Cell [] getRockPositions(){
+		ArrayList<Cell> res = new ArrayList<>();
+		for (int i = 0; i < this.width; i++){
+			for (int j = 0; j < this.height; j++){
+				if (cells[i][j].getHasRock()){
+					res.add(cells[i][j]);
+				}
+			}
+		}
+		Cell[] resArr = new Cell[res.size()];
+		for (int k = 0; k < res.size(); k++){
+			resArr[k] = res.get(k);
+		}
+		return resArr;
+	}
+	
+	public Cell [] getPadPositions(){
+		ArrayList<Cell> res = new ArrayList<>();
+		for (int i = 0; i < this.width; i++){
+			for (int j = 0; j < this.height; j++){
+				if (cells[i][j].getStatus() == CellStatus.pressurePad){
+					res.add(cells[i][j]);
+				}
+			}
+		}
+		Cell[] resArr = new Cell[res.size()];
+		for (int k = 0; k < res.size(); k++){
+			resArr[k] = res.get(k);
+		}
+		return resArr;
+	}
+	
+	public Cell [] getObstaclePositions(){
+		ArrayList<Cell> res = new ArrayList<>();
+		for (int i = 0; i < this.width; i++){
+			for (int j = 0; j < this.height; j++){
+				if (cells[i][j].getStatus() == CellStatus.obstacle){
+					res.add(cells[i][j]);
+				}
+			}
+		}
+		Cell[] resArr = new Cell[res.size()];
+		for (int k = 0; k < res.size(); k++){
+			resArr[k] = res.get(k);
+		}
+		return resArr;
 	}
 
 	public void displayGrid() {
@@ -144,20 +210,23 @@ public class Grid {
 
 		System.out.println();
 
-		// Printing Cells log
-		// for (int i = 0; i < this.width; i++){
-		// for(int j = 0; j < this.height; j++){
-		// System.out.print("Cell " + this.cells[i][j].name+ ": ");
-		// System.out.print(this.cells[i][j].status + ", ");
-		// System.out.print(this.cells[i][j].hasRock);
-		// System.out.println();
-		// }
-		// }
+//		Printing Cells log
+		System.out.println("Cells Log\n");
+		System.out.println("Name: status, hasRock, Agent");
+		for (int i = 0; i < this.width; i++){
+			for(int j = 0; j < this.height; j++){
+				 System.out.print("Cell " + this.cells[i][j].getName()+ ": ");
+				 System.out.print(this.cells[i][j].getStatus() + ", ");
+				 System.out.print(this.cells[i][j].getHasRock() + ", ");
+				 System.out.print(this.agentPosition.getX() == i && this.agentPosition.getY() == j);
+				 System.out.println();
+		 	}
+		 }
 	}
 
 	public static void main(String[] args) {
 
-		Grid g = new Grid(4, 4, 6, 6);
+		Grid g = new Grid(5, 5, 3, 3);
 
 	}
 
