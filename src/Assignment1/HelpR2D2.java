@@ -58,13 +58,15 @@ public class HelpR2D2 extends Problem {
 	}
 
 	public HelpR2D2(String[] operators, State initState, State[] stateSpace, Cell telePosition,
-			Cell[] obstaclesPosition, Cell[] padsPositions) {
+			Cell[] obstaclesPosition, Cell[] padsPositions, int width, int height) {
 		super.setOperators(operators);
 		super.setInitState(initState);
 		this.telePosition = telePosition;
 		this.obstaclesPositions = obstaclesPosition;
 		this.padsPositions = padsPositions;
 		this.expandedStates = new ArrayList<MyState>();
+		this.height = height;
+		this.width = width;
 		// super.stateSpace?
 	}
 
@@ -110,7 +112,18 @@ public class HelpR2D2 extends Problem {
 				}
 			}
 		}
-		System.out.println(expandedStates.size());
+//		for(MyState s : expandedStates) {
+//			System.out.println("--------------------");
+//			System.out.println("Current Position: "+ "(" + s.getCurrentPosition().getX() + ","
+//					+ s.getCurrentPosition().getY()+")");
+//			System.out.println("Rock Positions");
+//			for(Cell rock : s.getRocksPositions()) {
+//				System.out.println("Rock Position: "+ "(" + rock.getX() + ","
+//						+ rock.getY()+")");
+//			}
+//			System.out.println("--------------------");
+//		}
+		//System.out.println(expandedStates.size());
 		expandedStates.add(state);
 		return false;
 	}
@@ -452,7 +465,7 @@ public class HelpR2D2 extends Problem {
 		Cell [] obstaclesPostitions = this.getObstaclesPositions();
 		
 		// check if right cell is a wall
-		if (currentPosition.getX() == this.getWidth() - 1) return null;
+		if (currentPosition.getX() >= this.getWidth() - 1) return null;
 		
 		//get right cell
 		Cell rightCell = new Cell();

@@ -51,16 +51,15 @@ public class GeneralSearch {
 				System.out.println("SUCCESS!!");
 				return node;
 			}
-			HelpR2D2 p = (HelpR2D2)problem;
-			if(p.pastState(node)) continue;
-			//System.out.println(nodes.size());
+			
+			if(this.problem.pastState(node)) continue; //check if state is already traversed before
 			switch(this.qingFunc) {
 			case BF: nodes = this.BFS(nodes, node); break;
 			case DF: nodes = this.DFS(nodes, node); break;
 			default:
 				break;
 			}
-			System.out.println(nodes.size());
+			//System.out.println(nodes.size());
 		}
 		return null;
 	}
@@ -119,7 +118,7 @@ public class GeneralSearch {
 		String [] ops = new String [4];
 		MyState [] stateSpace = new MyState[4];
 		
-		HelpR2D2 problemR2D2 = new HelpR2D2(ops, initState, stateSpace, teleport, obstacles, pads);
+		HelpR2D2 problemR2D2 = new HelpR2D2(ops, initState, stateSpace, teleport, obstacles, pads, 3 , 3);
 		
 		GeneralSearch gs = new GeneralSearch(problemR2D2, QueuingFunction.BF);
 		Node n = gs.search();
