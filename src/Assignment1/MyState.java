@@ -33,9 +33,10 @@ public class MyState extends State {
 		this.unactivatedPads = unactivatedPads;
 	}
 
-	public MyState(Cell currentPosition, int unactivatedPads, Cell telePosition) {
+	public MyState(Cell currentPosition, int unactivatedPads, Cell [] rocksPositions) {
 		this.currentPosition = currentPosition;
 		this.unactivatedPads = unactivatedPads;
+		this.rocksPositions = rocksPositions;
 	}
 
 }

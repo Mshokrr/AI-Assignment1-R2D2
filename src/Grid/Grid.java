@@ -71,7 +71,7 @@ public class Grid {
 				Cell c = new Cell();
 				c.setX(i);
 				c.setY(j);
-				c.setName("R" + i + " " + "C" + j); 
+				c.setName("R" + i + " " + "C" + j);
 				this.cells[i][j] = c;
 			}
 		}
@@ -84,12 +84,12 @@ public class Grid {
 		while (((this.width * this.height)/7) < numberOfObstacles) {
 			numberOfObstacles /= 2;
 		}
-		
+
 		// Initializing Agent position
-		
+
 		this.agentPosition = cells[(int)(Math.random()*this.width)][(int)(Math.random()*height)];
 		System.out.println("=> Initializing agent at " + this.agentPosition.getName());
-		
+
 		int teleportPositionX = (int)(Math.random()*this.width);
 		int teleportPositionY = (int)(Math.random()*this.height);
 		this.cells[teleportPositionX][teleportPositionY].setStatus(CellStatus.teleport);
@@ -97,7 +97,7 @@ public class Grid {
 
 		System.out.println("=> Initializing with " + numberOfObstacles + " obstacles");
 		System.out.println("=> Initializing with " + numberOfObstacles + " pads and rocks");
-		
+
 		for (int i = 0; i < numberOfObstacles; i++) {
 			int obstaclePositionX = (int) Math.floor(Math.random() * this.width);
 			int obstaclePositionY = (int) Math.floor(Math.random() * this.height);
@@ -125,13 +125,13 @@ public class Grid {
 				rockPositionY = (int) Math.floor(Math.random() * this.height);
 			}
 			 System.out.println("=> Rock at: R" + rockPositionX + " C" + rockPositionY);
-			 this.cells[rockPositionX][rockPositionY].setHasRock(true); 
+			 this.cells[rockPositionX][rockPositionY].setHasRock(true);
 		}
 
 		System.out.println("========\n\nThe Grid:\n");
 		this.displayGrid();
 	}
-	
+
 	public Cell [] getRockPositions(){
 		ArrayList<Cell> res = new ArrayList<>();
 		for (int i = 0; i < this.width; i++){
@@ -147,7 +147,7 @@ public class Grid {
 		}
 		return resArr;
 	}
-	
+
 	public Cell [] getPadPositions(){
 		ArrayList<Cell> res = new ArrayList<>();
 		for (int i = 0; i < this.width; i++){
@@ -163,7 +163,7 @@ public class Grid {
 		}
 		return resArr;
 	}
-	
+
 	public Cell [] getObstaclePositions(){
 		ArrayList<Cell> res = new ArrayList<>();
 		for (int i = 0; i < this.width; i++){
