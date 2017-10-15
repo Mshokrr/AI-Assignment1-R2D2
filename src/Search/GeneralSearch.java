@@ -51,8 +51,16 @@ public class GeneralSearch {
 				System.out.println("SUCCESS!!");
 				return node;
 			}
+			HelpR2D2 p = (HelpR2D2)problem;
+			if(p.pastState(node)) continue;
+			//System.out.println(nodes.size());
+			switch(this.qingFunc) {
+			case BF: nodes = this.BFS(nodes, node); break;
+			case DF: nodes = this.DFS(nodes, node); break;
+			default:
+				break;
+			}
 			System.out.println(nodes.size());
-			nodes = this.BFS(nodes, node);
 		}
 		return null;
 	}
@@ -65,6 +73,17 @@ public class GeneralSearch {
 		}
 		return nodes;
 	}
+	
+	public Deque<Node> DFS(Deque<Node> nodes, Node node){
+		ArrayList<Node> children = this.problem.Expand(node);
+		int i = 0;
+		for(Node childNode : children) {
+			//System.out.println(i++);
+			nodes.addFirst(childNode);
+		}
+		return nodes;
+	}
+	
 	public static void main(String[] args) {
 		Cell currentPosition = new Cell();
 		currentPosition.setX(0);

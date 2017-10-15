@@ -15,6 +15,7 @@ public class HelpR2D2 extends Problem {
 	private Cell[] padsPositions;
     private int height;
     private int width;
+    private ArrayList<MyState> expandedStates;
     
 	public int getHeight() {
 		return height;
@@ -63,6 +64,7 @@ public class HelpR2D2 extends Problem {
 		this.telePosition = telePosition;
 		this.obstaclesPositions = obstaclesPosition;
 		this.padsPositions = padsPositions;
+		this.expandedStates = new ArrayList<MyState>();
 		// super.stateSpace?
 	}
 
@@ -87,9 +89,34 @@ public class HelpR2D2 extends Problem {
 		}
 		return false;
 	}
-
+	public boolean pastState(Node node) {
+		MyState state = (MyState)node.getCurrentState();
+		for(MyState s : expandedStates) {
+			if(s.getCurrentPosition().getX() == state.getCurrentPosition().getX() 
+					&& s.getCurrentPosition().getY() == state.getCurrentPosition().getY()) {
+				
+				if(s.getUnactivatedPads() == state.getUnactivatedPads()) {
+					boolean identical_rocks = true;
+					for(int i = 0; i < s.getRocksPositions().length; i++) {
+						if(s.getRocksPositions()[i].getX() != state.getRocksPositions()[i].getX()
+							|| s.getRocksPositions()[i].getY() != state.getRocksPositions()[i].getY()) {
+							identical_rocks = false;
+						}
+					}
+					if(identical_rocks) {
+						//System.out.println("repeated state");
+						return true;
+					}
+				}
+			}
+		}
+		System.out.println(expandedStates.size());
+		expandedStates.add(state);
+		return false;
+	}
 	@Override
 	public ArrayList<Node> Expand(Node node) {
+		
 		ArrayList<Node> result = new ArrayList<Node>();
 		
 		Node up = this.up(node);
@@ -103,14 +130,16 @@ public class HelpR2D2 extends Problem {
 		
 		Node left = this.left(node);
 		if(left != null) result.add(left);
-		
+
 		return result;
 	}
 
 	public Node up(Node node) {
 		MyState state = (MyState) node.getCurrentState();
-		Cell[] rocksPositions = state.getRocksPositions();
-		Cell currentPosition = state.getCurrentPosition();
+		Cell[] rocksPositions = state.getRocksPositions().clone();
+		Cell currentPosition = new Cell();
+		currentPosition.setX(state.getCurrentPosition().getX());
+		currentPosition.setY(state.getCurrentPosition().getY());
 		int unactivatedPads = state.getUnactivatedPads();
 		Cell [] padsPositions = this.getPadsPositions();
 		Cell [] obstaclesPostitions = this.getObstaclesPositions();
@@ -211,8 +240,10 @@ public class HelpR2D2 extends Problem {
 
 	public Node down(Node node) {
 		MyState state = (MyState) node.getCurrentState();
-		Cell[] rocksPositions = state.getRocksPositions();
-		Cell currentPosition = state.getCurrentPosition();
+		Cell[] rocksPositions = state.getRocksPositions().clone();
+		Cell currentPosition = new Cell();
+		currentPosition.setX(state.getCurrentPosition().getX());
+		currentPosition.setY(state.getCurrentPosition().getY());
 		int unactivatedPads = state.getUnactivatedPads();
 		Cell [] padsPositions = this.getPadsPositions();
 		Cell [] obstaclesPostitions = this.getObstaclesPositions();
@@ -311,12 +342,13 @@ public class HelpR2D2 extends Problem {
 
 	public Node left(Node node) {
 		MyState state = (MyState) node.getCurrentState();
-		Cell[] rocksPositions = state.getRocksPositions();
-		Cell currentPosition = state.getCurrentPosition();
+		Cell[] rocksPositions = state.getRocksPositions().clone();
+		Cell currentPosition = new Cell();
+		currentPosition.setX(state.getCurrentPosition().getX());
+		currentPosition.setY(state.getCurrentPosition().getY());
 		int unactivatedPads = state.getUnactivatedPads();
 		Cell [] padsPositions = this.getPadsPositions();
 		Cell [] obstaclesPostitions = this.getObstaclesPositions();
-		
 		// check if left cell is a wall
 		if (currentPosition.getX() == 0)
 			return null;
@@ -411,8 +443,10 @@ public class HelpR2D2 extends Problem {
 
 	public Node right(Node node) {
 		MyState state = (MyState) node.getCurrentState();
-		Cell[] rocksPositions = state.getRocksPositions();
-		Cell currentPosition = state.getCurrentPosition();
+		Cell[] rocksPositions = state.getRocksPositions().clone();
+		Cell currentPosition = new Cell();
+		currentPosition.setX(state.getCurrentPosition().getX());
+		currentPosition.setY(state.getCurrentPosition().getY());
 		int unactivatedPads = state.getUnactivatedPads();
 		Cell [] padsPositions = this.getPadsPositions();
 		Cell [] obstaclesPostitions = this.getObstaclesPositions();
