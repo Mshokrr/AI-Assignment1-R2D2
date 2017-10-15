@@ -11,6 +11,7 @@ public abstract class Problem {
 	public abstract boolean goalTest(Node node);
 	
 	public abstract ArrayList<Node> Expand(Node node);
+	public abstract void clearPastState();
 	public abstract boolean pastState(Node node);
 	public String[] getOperators() {
 		return operators;

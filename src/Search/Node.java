@@ -1,12 +1,21 @@
 package Search;
 
-public class Node {
+public class Node implements Comparable {
 	private Node parent;
 	private State currentState;
 	private int depth;
 	private int pathCost;
 	private String operator;
+	private int order;
 	
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
+	}
+
 	public Node getParent() {
 		return parent;
 	}
@@ -53,6 +62,15 @@ public class Node {
 		this.depth = depth;
 		this.pathCost = pathCost;
 		this.operator = operator;
+		this.order = this.pathCost;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		Node n = (Node) o;
+		if(n.order > this.order) return -1;
+		else if(n.order < this.order) return 1;
+		return 0;
 	}
 	
 }

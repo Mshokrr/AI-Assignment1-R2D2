@@ -38,5 +38,8 @@ public class MyState extends State {
 		this.unactivatedPads = unactivatedPads;
 		this.rocksPositions = rocksPositions;
 	}
+	public int heuristic() {
+		return this.unactivatedPads;
+	}
 
 }
