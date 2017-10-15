@@ -8,7 +8,6 @@ public class Grid {
 	private int height;
 	private Cell[][] cells;
 	private Cell agentPosition;
-	private Cell teleportPosition;
 
 	public int getWidth() {
 		return width;
@@ -178,6 +177,28 @@ public class Grid {
 			resArr[k] = res.get(k);
 		}
 		return resArr;
+	}
+	
+	public Cell getTeleportPosition(){
+		for (int i = 0; i < this.width; i++){
+			for (int j = 0; j < this.height; j++){
+				if (cells[i][j].getStatus() == CellStatus.teleport){
+					return cells[i][j];
+				}
+			}
+		}
+		return null;
+	}
+	
+	public Cell getAgentPosition(){
+		for (int i = 0; i < this.width; i++){
+			for (int j = 0; j < this.height; j++){
+				if (this.agentPosition.getX() == i & this.agentPosition.getY() == j){
+					return cells[i][j];
+				}
+			}
+		}
+		return null;
 	}
 
 	public void displayGrid() {
