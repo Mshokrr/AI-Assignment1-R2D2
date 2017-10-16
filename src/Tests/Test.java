@@ -7,7 +7,7 @@ import Assignment1.*;
 public class Test {
 	
   public static void main(String [] args){
-    Grid g = new Grid(3, 3, 1, 1);
+    Grid g = new Grid(4, 4, 1, 1);
 		System.out.println();
 		System.out.println("Testing");
 		Cell [] rockPositions = g.getRockPositions();
@@ -34,7 +34,7 @@ public class Test {
 		Cell teleport = g.getTeleportPosition();
 		Cell currentPosition = g.getAgentPosition();
 
-		MyState initState = new MyState(currentPosition, g.getNumberOfPads(), rockPositions);
+		MyState initState = new MyState(currentPosition, g.getNumberOfPads(), rockPositions, 0);
 		String [] ops = new String[4];
 		MyState [] stateSpace = new MyState[4];
 		HelpR2D2 problem1 = new HelpR2D2(ops, initState, stateSpace, teleport, obstaclePositions, padPositions, g.getWidth(), g.getHeight());
