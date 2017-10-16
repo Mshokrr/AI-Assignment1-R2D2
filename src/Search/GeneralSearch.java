@@ -13,7 +13,8 @@ public class GeneralSearch {
 	private QueuingFunction qingFunc;
 	private PriorityQueue<Node> nodesPrio = new PriorityQueue<>();
 	private Problem problem;
-
+	private int numberOfExpandedNodes;
+	
 	public Deque<Node> getNodes() {
 		return nodes;
 	}
@@ -42,6 +43,7 @@ public class GeneralSearch {
 		this.problem = problem;
 		this.qingFunc = qingFunc;
 		nodes = new LinkedList<Node>();
+		numberOfExpandedNodes = 0;
 	}
 
 	public Node search() {
@@ -51,13 +53,14 @@ public class GeneralSearch {
 			nodes.addFirst(initialNode);
 			while (!nodes.isEmpty()) {
 				Node node = nodes.pop();
+				if (this.problem.pastState(node))
+					continue; // check if state is already traversed before
+				numberOfExpandedNodes++;
 				if (problem.goalTest(node)) {
 					System.out.println("SUCCESS!!");
 					return node;
 				}
 
-				if (this.problem.pastState(node))
-					continue; // check if state is already traversed before
 				switch (this.qingFunc) {
 				case BF:
 					nodes = this.BFS(nodes, node);
@@ -75,13 +78,16 @@ public class GeneralSearch {
 			nodesPrio.add(initialNode);
 			while (!nodesPrio.isEmpty()) {
 				Node node = nodesPrio.poll();
+				if (this.problem.pastState(node))
+					continue; // check if state is already traversed before
+				numberOfExpandedNodes++;
+				
 				if (problem.goalTest(node)) {
 					System.out.println("SUCCESS!!");
 					return node;
 				}
 
-				if (this.problem.pastState(node))
-					continue; // check if state is already traversed before
+				
 				switch (this.qingFunc) {
 				case UC:
 					nodesPrio = this.uniformedCost(node, nodesPrio);
@@ -127,12 +133,13 @@ public class GeneralSearch {
 			while (!nodes.isEmpty()) {
 				System.out.println("Counter"+counter);
 				Node node = nodes.pop();
+				if (this.problem.pastState(node))
+					continue; // check if state is already traversed before
+				numberOfExpandedNodes++;
 				if (problem.goalTest(node)) {
 					System.out.println("SUCCESS!!");
 					return node;
 				}
-				if (this.problem.pastState(node))
-					continue; // check if state is already traversed before
 				nodes = IDS(nodes, node, counter);
 				System.out.println("IDS");
 			}
@@ -147,7 +154,7 @@ public class GeneralSearch {
 		for (Node childNode : children) {
 			// System.out.println(i++);
 			//System.out.println(childNode.getPathCost());
-			if (counter < childNode.getPathCost())
+			if (counter < childNode.getDepth())
 				return nodes;
 			nodes.addFirst(childNode);
 		}
@@ -191,80 +198,101 @@ public class GeneralSearch {
 
 	public static void main(String[] args) {
 		Cell currentPosition = new Cell();
-		currentPosition.setX(0);
-		currentPosition.setY(2);
+		currentPosition.setX(4);
+		currentPosition.setY(0);
 
 		Cell rockPosition = new Cell();
 		rockPosition.setX(1);
-		rockPosition.setY(1);
+		rockPosition.setY(2);
 		
 		Cell rockPosition2 = new Cell();
-		rockPosition.setX(3);
-		rockPosition.setY(1);
+		rockPosition2.setX(1);
+		rockPosition2.setY(3);
 		
 		Cell rockPosition3 = new Cell();
-		rockPosition.setX(1);
-		rockPosition.setY(3);
-
+		rockPosition3.setX(2);
+		rockPosition3.setY(4);
+		
+		Cell rockPosition4 = new Cell();
+		rockPosition4.setX(3);
+		rockPosition4.setY(3);
+		
 		Cell[] rockPositions = new Cell[3];
 		rockPositions[0] = rockPosition;
-		rockPositions[1] = rockPosition2;
-		rockPositions[2] = rockPosition3;
-
-		MyState initState = new MyState(currentPosition, 1, rockPositions);
-
+		//rockPositions[1] = rockPosition2;
+		rockPositions[1] = rockPosition3;
+		rockPositions[2] = rockPosition4;
+		
+		MyState initState = new MyState(currentPosition, rockPositions.length, rockPositions, 0);
+		
 		Cell teleport = new Cell();
-		teleport.setX(3);
-		teleport.setY(3);
+		teleport.setX(2);
+		teleport.setY(2);
 
 		Cell obstacle = new Cell();
 		obstacle.setX(0);
 		obstacle.setY(0);
 		
 		Cell obstacle1 = new Cell();
-		obstacle.setX(2);
-		obstacle.setY(0);
+		obstacle1.setX(2);
+		obstacle1.setY(0);
 		
 		Cell[] obstacles = new Cell[2];
 		obstacles[0] = obstacle;
 		obstacles[1] = obstacle1;
 
 		Cell pad = new Cell();
-		pad.setX(3);
-		pad.setY(0);
+		pad.setX(0);
+		pad.setY(4);
 		
 		Cell pad1 = new Cell();
-		pad.setX(0);
-		pad.setY(1);
+		pad1.setX(1);
+		pad1.setY(0);
 		
 		Cell pad2 = new Cell();
-		pad.setX(2);
-		pad.setY(3);
+		pad2.setX(3);
+		pad2.setY(0);
+		
+		Cell pad3 = new Cell();
+		pad3.setX(4);
+		pad3.setY(1);
 		
 		Cell[] pads = new Cell[3];
 		pads[0] = pad;
-		pads[1] = pad1;
-		pads[2] = pad2;
+		//pads[1] = pad1;
+		pads[1] = pad2;
+		pads[2] = pad3;
 
 		String[] ops = new String[4];
 		MyState[] stateSpace = new MyState[4];
-
+		
 		HelpR2D2 problemR2D2 = new HelpR2D2(ops, initState, stateSpace, teleport, obstacles, pads, 5, 5);
-
-		GeneralSearch gs = new GeneralSearch(problemR2D2, QueuingFunction.BF);
+		
+		for(Cell rockk: initState.getRocksPositions()) {
+			System.out.println("ROCK: "+ rockk.getX()+ ", "+ rockk.getY());
+		}
+		for(Cell padd: problemR2D2.getPadsPositions()) {
+			System.out.println("Pad: "+ padd.getX()+ ", "+ padd.getY());
+		}
+		
+		for(Cell obs: problemR2D2.getObstaclesPositions()) {
+			System.out.println("Obstacle: "+ obs.getX()+ ", "+ obs.getY());
+		}
+		
+		GeneralSearch gs = new GeneralSearch(problemR2D2, QueuingFunction.ID);
 		Node n = gs.search();
 		System.out.println("max depth: "+ n.getDepth());
 		Deque<String> path = new LinkedList<String>();
+		System.out.println(gs.numberOfExpandedNodes);
 		while (n != null) {
 			path.addFirst(n.getOperator());
 			n = n.getParent();
-			
+			  
 		}
 		while(!path.isEmpty()) {
 			System.out.print(path.pop() + "->");
 		}
 		
 
-		
 	}
 }

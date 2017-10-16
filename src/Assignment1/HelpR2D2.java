@@ -84,6 +84,10 @@ public class HelpR2D2 extends Problem {
 																	
 			if (state.getUnactivatedPads() == 0) {
 				System.out.println("Goal success");
+				MyState s = (MyState) node.getCurrentState();
+				for(Cell rock: s.getRocksPositions()) {
+					System.out.println(rock.getX()+", "+rock.getY());
+				}
 				return true;
 			}
 
@@ -101,22 +105,23 @@ public class HelpR2D2 extends Problem {
 	public boolean pastState(Node node) {
 		MyState state = (MyState)node.getCurrentState();
 		for(MyState s : expandedStates) {
-			if(s.getCurrentPosition().getX() == state.getCurrentPosition().getX() 
-					&& s.getCurrentPosition().getY() == state.getCurrentPosition().getY()) {
-				
-				if(s.getUnactivatedPads() == state.getUnactivatedPads()) {
-					boolean identical_rocks = true;
-					for(int i = 0; i < s.getRocksPositions().length; i++) {
-						if(s.getRocksPositions()[i].getX() != state.getRocksPositions()[i].getX()
-							|| s.getRocksPositions()[i].getY() != state.getRocksPositions()[i].getY()) {
-							identical_rocks = false;
+			if(state.getExpandedNodes() >= s.getExpandedNodes()) {
+				if(s.getCurrentPosition().getX() == state.getCurrentPosition().getX() 
+						&& s.getCurrentPosition().getY() == state.getCurrentPosition().getY()) {
+					if(s.getUnactivatedPads() == state.getUnactivatedPads()) {
+						boolean identical_rocks = true;
+						for(int i = 0; i < s.getRocksPositions().length; i++) {
+							if(s.getRocksPositions()[i].getX() != state.getRocksPositions()[i].getX()
+								|| s.getRocksPositions()[i].getY() != state.getRocksPositions()[i].getY()) {
+								identical_rocks = false;
+							}
+						}
+						if(identical_rocks) {
+							//System.out.println("repeated state");
+							return true;
 						}
 					}
-					if(identical_rocks) {
-						//System.out.println("repeated state");
-						return true;
-					}
-				}
+				}				
 			}
 		}
 //		for(MyState s : expandedStates) {
@@ -244,7 +249,7 @@ public class HelpR2D2 extends Problem {
 			newPosition.setY(currentPosition.getY()-1);
 			rocksPositions[rockIndex].setY(rocksPositions[rockIndex].getY() - 1);
 			
-			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions, state.getExpandedNodes()+1);
 			
 			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "UP");
 			
@@ -257,7 +262,7 @@ public class HelpR2D2 extends Problem {
 			newPosition.setX(currentPosition.getX());
 			newPosition.setY(currentPosition.getY()-1);
 			
-			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions, state.getExpandedNodes()+1);
 			
 			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "UP");
 			
@@ -268,7 +273,7 @@ public class HelpR2D2 extends Problem {
 
 	public Node down(Node node) {
 		MyState state = (MyState) node.getCurrentState();
-		Cell[] rocksPositions = state.getRocksPositions().clone();
+		Cell[] rocksPositions = instantiateObject(state.getRocksPositions());
 		Cell currentPosition = new Cell();
 		currentPosition.setX(state.getCurrentPosition().getX());
 		currentPosition.setY(state.getCurrentPosition().getY());
@@ -348,7 +353,7 @@ public class HelpR2D2 extends Problem {
 			newPosition.setY(currentPosition.getY()+1);
 			rocksPositions[rockIndex].setY(rocksPositions[rockIndex].getY() + 1);
 			
-			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions, state.getExpandedNodes()+1);
 			
 			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "DOWN");
 			
@@ -360,7 +365,7 @@ public class HelpR2D2 extends Problem {
 			newPosition.setX(currentPosition.getX());
 			newPosition.setY(currentPosition.getY()+1);
 			
-			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions, state.getExpandedNodes()+1);
 			
 			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "DOWN");
 			
@@ -370,7 +375,7 @@ public class HelpR2D2 extends Problem {
 
 	public Node left(Node node) {
 		MyState state = (MyState) node.getCurrentState();
-		Cell[] rocksPositions = state.getRocksPositions().clone();
+		Cell[] rocksPositions = instantiateObject(state.getRocksPositions());
 		Cell currentPosition = new Cell();
 		currentPosition.setX(state.getCurrentPosition().getX());
 		currentPosition.setY(state.getCurrentPosition().getY());
@@ -446,9 +451,9 @@ public class HelpR2D2 extends Problem {
 			Cell newPosition = new Cell();
 			newPosition.setX(currentPosition.getX()-1);
 			newPosition.setY(currentPosition.getY());
-			rocksPositions[rockIndex].setY(rocksPositions[rockIndex].getX() - 1);
+			rocksPositions[rockIndex].setX(rocksPositions[rockIndex].getX() - 1);
 			
-			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions, state.getExpandedNodes()+1);
 			
 			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "LEFT");
 			
@@ -461,7 +466,7 @@ public class HelpR2D2 extends Problem {
 			newPosition.setX(currentPosition.getX()-1);
 			newPosition.setY(currentPosition.getY());
 			
-			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions, state.getExpandedNodes()+1);
 			
 			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "LEFT");
 			
@@ -471,7 +476,7 @@ public class HelpR2D2 extends Problem {
 
 	public Node right(Node node) {
 		MyState state = (MyState) node.getCurrentState();
-		Cell[] rocksPositions = state.getRocksPositions().clone();
+		Cell[] rocksPositions = instantiateObject(state.getRocksPositions());
 		Cell currentPosition = new Cell();
 		currentPosition.setX(state.getCurrentPosition().getX());
 		currentPosition.setY(state.getCurrentPosition().getY());
@@ -549,9 +554,9 @@ public class HelpR2D2 extends Problem {
 			Cell newPosition = new Cell();
 			newPosition.setX(currentPosition.getX()+1);
 			newPosition.setY(currentPosition.getY());
-			rocksPositions[rockIndex].setY(rocksPositions[rockIndex].getX() + 1);
+			rocksPositions[rockIndex].setX(rocksPositions[rockIndex].getX() + 1);
 			
-			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions, state.getExpandedNodes()+1);
 			
 			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "RIGHT");
 			
@@ -563,7 +568,7 @@ public class HelpR2D2 extends Problem {
 			newPosition.setX(currentPosition.getX()+1);
 			newPosition.setY(currentPosition.getY());
 			
-			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions);
+			MyState newState = new MyState(newPosition, unactivatedPads, rocksPositions, state.getExpandedNodes()+1);
 			
 			Node newNode = new Node(node, newState, node.getDepth()+1, node.getPathCost()+1, "RIGHT");
 			
