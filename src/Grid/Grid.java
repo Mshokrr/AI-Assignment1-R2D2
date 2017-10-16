@@ -7,7 +7,7 @@ public class Grid {
 	private int width;
 	private int height;
 	private Cell[][] cells;
-	
+
 
 	private Cell agentPosition;
 	private int numberOfPads;
@@ -137,7 +137,7 @@ public class Grid {
 		System.out.println("========\n\nThe Grid:\n");
 		this.displayGrid();
 	}
-	
+
 	public int getNumberOfPads() {
 		return numberOfPads;
 	}
@@ -193,7 +193,7 @@ public class Grid {
 		}
 		return resArr;
 	}
-	
+
 	public Cell getTeleportPosition(){
 		for (int i = 0; i < this.width; i++){
 			for (int j = 0; j < this.height; j++){
@@ -204,7 +204,7 @@ public class Grid {
 		}
 		return null;
 	}
-	
+
 	public Cell getAgentPosition(){
 		for (int i = 0; i < this.width; i++){
 			for (int j = 0; j < this.height; j++){

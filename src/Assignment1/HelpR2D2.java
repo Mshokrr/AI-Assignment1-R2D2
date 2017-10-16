@@ -80,9 +80,8 @@ public class HelpR2D2 extends Problem {
 	public boolean goalTest(Node node) {
 		MyState state = (MyState) node.getCurrentState();
 		if (state.getCurrentPosition().getX() == this.getTelePosition().getX() 
-				&& state.getCurrentPosition().getY() == this.getTelePosition().getY()) { // comparing
-																	// issue
-			System.out.println("R2D2 on teleport cell!");
+				&& state.getCurrentPosition().getY() == this.getTelePosition().getY()) { 
+																	
 			if (state.getUnactivatedPads() == 0) {
 				System.out.println("Goal success");
 				return true;
@@ -91,6 +90,14 @@ public class HelpR2D2 extends Problem {
 		}
 		return false;
 	}
+	public ArrayList<MyState> getExpandedStates() {
+		return expandedStates;
+	}
+
+	public void setExpandedStates(ArrayList<MyState> expandedStates) {
+		this.expandedStates = expandedStates;
+	}
+	
 	public boolean pastState(Node node) {
 		MyState state = (MyState)node.getCurrentState();
 		for(MyState s : expandedStates) {
@@ -146,10 +153,18 @@ public class HelpR2D2 extends Problem {
 
 		return result;
 	}
-
+	public Cell [] instantiateObject(Cell [] rocksPositions) {
+		Cell [] result = new Cell[rocksPositions.length];
+		for(int i = 0; i < result.length; i++) {
+			result[i] = new Cell();
+			result[i].setX(rocksPositions[i].getX());
+			result[i].setY(rocksPositions[i].getY());
+		}
+		return result;
+	}
 	public Node up(Node node) {
 		MyState state = (MyState) node.getCurrentState();
-		Cell[] rocksPositions = state.getRocksPositions().clone();
+		Cell[] rocksPositions = instantiateObject(state.getRocksPositions());
 		Cell currentPosition = new Cell();
 		currentPosition.setX(state.getCurrentPosition().getX());
 		currentPosition.setY(state.getCurrentPosition().getY());
@@ -600,4 +615,10 @@ public class HelpR2D2 extends Problem {
 //		System.out.println(newState.getCurrentPosition().getY());
 //		
 //	}
+
+	@Override
+	public void clearPastState() {
+		this.expandedStates.clear();
+		
+	}
 }
