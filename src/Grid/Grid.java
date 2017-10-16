@@ -7,7 +7,10 @@ public class Grid {
 	private int width;
 	private int height;
 	private Cell[][] cells;
+	
+
 	private Cell agentPosition;
+	private int numberOfPads;
 
 	public int getWidth() {
 		return width;
@@ -36,6 +39,7 @@ public class Grid {
 	public Grid(int width, int height, int numberOfPads, int numberOfObstacles) {
 		this.width = width;
 		this.height = height;
+		this.numberOfPads = numberOfPads;
 		System.out.println("\n\n\t\tWELCOME\n");
 		System.out.println("Escape mission of R2D2 from the Death Star");
 		System.out.println("========\n");
@@ -79,6 +83,7 @@ public class Grid {
 
 		while (((this.width * this.height)/7) < numberOfPads) {
 			numberOfPads /= 2;
+			this.numberOfPads /= 2;
 		}
 		while (((this.width * this.height)/7) < numberOfObstacles) {
 			numberOfObstacles /= 2;
@@ -100,10 +105,11 @@ public class Grid {
 		for (int i = 0; i < numberOfObstacles; i++) {
 			int obstaclePositionX = (int) Math.floor(Math.random() * this.width);
 			int obstaclePositionY = (int) Math.floor(Math.random() * this.height);
-			System.out.println("=> Obstacle at: R" + obstaclePositionX + " C" + obstaclePositionY);
 			if (!(this.agentPosition.getX() == obstaclePositionX && this.agentPosition.getY() == obstaclePositionY)
-					|| !(this.cells[obstaclePositionX][obstaclePositionY].getStatus() == CellStatus.free))
+					&& (this.cells[obstaclePositionX][obstaclePositionY].getStatus() == CellStatus.free)){
+				System.out.println("=> Obstacle at: R" + obstaclePositionX + " C" + obstaclePositionY);
 				this.cells[obstaclePositionX][obstaclePositionY].setStatus(CellStatus.obstacle);
+			}
 		}
 
 		for (int i = 0; i < numberOfPads; i++) {
@@ -119,16 +125,25 @@ public class Grid {
 			int rockPositionX = (int) Math.floor(Math.random() * this.width);
 			int rockPositionY = (int) Math.floor(Math.random() * this.height);
 			while (this.cells[rockPositionX][rockPositionY].getHasRock()
-					|| !(this.cells[rockPositionX][rockPositionY].getStatus() == CellStatus.free)) {
+					|| !(this.cells[rockPositionX][rockPositionY].getStatus() == CellStatus.free)
+					|| (this.agentPosition.getX() == rockPositionX && this.agentPosition.getY() == rockPositionY)) {
 				rockPositionX = (int) Math.floor(Math.random() * this.width);
 				rockPositionY = (int) Math.floor(Math.random() * this.height);
 			}
-			 System.out.println("=> Rock at: R" + rockPositionX + " C" + rockPositionY);
-			 this.cells[rockPositionX][rockPositionY].setHasRock(true);
+			System.out.println("=> Rock at: R" + rockPositionX + " C" + rockPositionY);
+			this.cells[rockPositionX][rockPositionY].setHasRock(true);
 		}
 
 		System.out.println("========\n\nThe Grid:\n");
 		this.displayGrid();
+	}
+	
+	public int getNumberOfPads() {
+		return numberOfPads;
+	}
+
+	public void setNumberOfPads(int numberOfPads) {
+		this.numberOfPads = numberOfPads;
 	}
 
 	public Cell [] getRockPositions(){
