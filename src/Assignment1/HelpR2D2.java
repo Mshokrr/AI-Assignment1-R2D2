@@ -80,9 +80,8 @@ public class HelpR2D2 extends Problem {
 	public boolean goalTest(Node node) {
 		MyState state = (MyState) node.getCurrentState();
 		if (state.getCurrentPosition().getX() == this.getTelePosition().getX() 
-				&& state.getCurrentPosition().getY() == this.getTelePosition().getY()) { // comparing
-																	// issue
-			System.out.println("R2D2 on teleport cell!");
+				&& state.getCurrentPosition().getY() == this.getTelePosition().getY()) { 
+																	
 			if (state.getUnactivatedPads() == 0) {
 				System.out.println("Goal success");
 				return true;

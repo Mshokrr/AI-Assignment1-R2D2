@@ -5,6 +5,7 @@ import java.util.*;
 import Assignment1.HelpR2D2;
 import Assignment1.MyState;
 import Grid.Cell;
+import Grid.Grid;
 
 public class GeneralSearch {
 
@@ -194,43 +195,76 @@ public class GeneralSearch {
 		currentPosition.setY(2);
 
 		Cell rockPosition = new Cell();
-		rockPosition.setX(0);
+		rockPosition.setX(1);
 		rockPosition.setY(1);
+		
+		Cell rockPosition2 = new Cell();
+		rockPosition.setX(3);
+		rockPosition.setY(1);
+		
+		Cell rockPosition3 = new Cell();
+		rockPosition.setX(1);
+		rockPosition.setY(3);
 
-		Cell[] rockPositions = new Cell[1];
+		Cell[] rockPositions = new Cell[3];
 		rockPositions[0] = rockPosition;
+		rockPositions[1] = rockPosition2;
+		rockPositions[2] = rockPosition3;
 
 		MyState initState = new MyState(currentPosition, 1, rockPositions);
 
 		Cell teleport = new Cell();
-		teleport.setX(2);
-		teleport.setY(2);
+		teleport.setX(3);
+		teleport.setY(3);
 
 		Cell obstacle = new Cell();
+		obstacle.setX(0);
+		obstacle.setY(0);
+		
+		Cell obstacle1 = new Cell();
 		obstacle.setX(2);
 		obstacle.setY(0);
-
-		Cell[] obstacles = new Cell[1];
+		
+		Cell[] obstacles = new Cell[2];
 		obstacles[0] = obstacle;
+		obstacles[1] = obstacle1;
 
 		Cell pad = new Cell();
-		pad.setX(0);
+		pad.setX(3);
 		pad.setY(0);
-
-		Cell[] pads = new Cell[1];
+		
+		Cell pad1 = new Cell();
+		pad.setX(0);
+		pad.setY(1);
+		
+		Cell pad2 = new Cell();
+		pad.setX(2);
+		pad.setY(3);
+		
+		Cell[] pads = new Cell[3];
 		pads[0] = pad;
+		pads[1] = pad1;
+		pads[2] = pad2;
 
 		String[] ops = new String[4];
 		MyState[] stateSpace = new MyState[4];
 
-		HelpR2D2 problemR2D2 = new HelpR2D2(ops, initState, stateSpace, teleport, obstacles, pads, 3, 3);
+		HelpR2D2 problemR2D2 = new HelpR2D2(ops, initState, stateSpace, teleport, obstacles, pads, 5, 5);
 
-		GeneralSearch gs = new GeneralSearch(problemR2D2, QueuingFunction.Greedy);
+		GeneralSearch gs = new GeneralSearch(problemR2D2, QueuingFunction.BF);
 		Node n = gs.search();
 		System.out.println("max depth: "+ n.getDepth());
+		Deque<String> path = new LinkedList<String>();
 		while (n != null) {
-			System.out.println("Operator: " + n.getOperator());
+			path.addFirst(n.getOperator());
 			n = n.getParent();
+			
 		}
+		while(!path.isEmpty()) {
+			System.out.print(path.pop() + "->");
+		}
+		
+
+		
 	}
 }
