@@ -1,6 +1,6 @@
 package Search;
 
-public class Node implements Comparable {
+public class Node implements Comparable<Node> {
 	private Node parent;
 	private State currentState;
 	private int depth;
@@ -66,10 +66,9 @@ public class Node implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		Node n = (Node) o;
-		if(n.order > this.order) return -1;
-		else if(n.order < this.order) return 1;
+	public int compareTo(Node o) {
+		if(o.order > this.order) return -1;
+		else if(o.order < this.order) return 1;
 		return 0;
 	}
 	

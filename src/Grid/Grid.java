@@ -232,6 +232,10 @@ public class Grid {
 					else {
 						if (this.cells[i][j].getHasRock())
 							System.out.print("|  r  ");
+						else if (this.cells[i][j] == getAgentPosition())
+							System.out.print("|  A  ");
+						else if (this.cells[i][j] == getTeleportPosition())
+							System.out.print("|  T  ");
 						else
 							System.out.print("|     ");
 					}
@@ -247,23 +251,22 @@ public class Grid {
 		System.out.println();
 
 //		Printing Cells log
-		System.out.println("Cells Log\n");
-		System.out.println("Name: status, hasRock, Agent");
-		for (int i = 0; i < this.width; i++){
-			for(int j = 0; j < this.height; j++){
-				 System.out.print("Cell " + this.cells[i][j].getName()+ ": ");
-				 System.out.print(this.cells[i][j].getStatus() + ", ");
-				 System.out.print(this.cells[i][j].getHasRock() + ", ");
-				 System.out.print(this.agentPosition.getX() == i && this.agentPosition.getY() == j);
-				 System.out.println();
-		 	}
-		 }
+//		System.out.println("Cells Log\n");
+//		System.out.println("Name: status, hasRock, Agent");
+//		for (int i = 0; i < this.width; i++){
+//			for(int j = 0; j < this.height; j++){
+//				 System.out.print("Cell " + this.cells[i][j].getName()+ ": ");
+//				 System.out.print(this.cells[i][j].getStatus() + ", ");
+//				 System.out.print(this.cells[i][j].getHasRock() + ", ");
+//				 System.out.print(this.agentPosition.getX() == i && this.agentPosition.getY() == j);
+//				 System.out.println();
+//		 	}
+//		 }
 	}
 
 	public static void main(String[] args) {
 
-		Grid g = new Grid(5, 5, 3, 3);
-
+		new Grid(5, 5, 3, 3);
 	}
 
 }

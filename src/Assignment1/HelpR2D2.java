@@ -69,6 +69,19 @@ public class HelpR2D2 extends Problem {
 		this.width = width;
 		// super.stateSpace?
 	}
+	
+	public HelpR2D2(Grid grid) {
+		super.setOperators(new String[4]);
+		this.telePosition = grid.getTeleportPosition();
+		this.obstaclesPositions = grid.getObstaclePositions();
+		this.padsPositions = grid.getPadPositions();
+		this.expandedStates = new ArrayList<MyState>();
+		this.height = grid.getHeight();
+		this.width = grid.getWidth();
+		MyState initState = new MyState(grid.getAgentPosition(), grid.getRockPositions().length, grid.getRockPositions(), 0);
+		super.setInitState(initState);
+		// super.stateSpace?
+	}
 
 	public int pathCost(Node n) {
 
@@ -85,9 +98,9 @@ public class HelpR2D2 extends Problem {
 			if (state.getUnactivatedPads() == 0) {
 				System.out.println("Goal success");
 				MyState s = (MyState) node.getCurrentState();
-				for(Cell rock: s.getRocksPositions()) {
-					System.out.println(rock.getX()+", "+rock.getY());
-				}
+//				for(Cell rock: s.getRocksPositions()) {
+//					System.out.println(rock.getX()+", "+rock.getY());
+//				}
 				return true;
 			}
 
