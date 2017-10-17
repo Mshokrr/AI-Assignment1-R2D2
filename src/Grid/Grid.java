@@ -221,16 +221,16 @@ public class Grid {
 			System.out.print("   _  ");
 		}
 		System.out.println();
-		for (int i = 0; i < this.width; i++) {
+		for (int i = 0; i < this.height; i++) {
 			System.out.println();
-			for (int j = 0; j < this.height; j++) {
-				if (this.cells[i][j].getStatus() == CellStatus.obstacle)
+			for (int j = 0; j < this.width; j++) {
+				if (this.cells[j][i].getStatus() == CellStatus.obstacle)
 					System.out.print("|  o  ");
 				else {
-					if (this.cells[i][j].getStatus() == CellStatus.pressurePad)
+					if (this.cells[j][i].getStatus() == CellStatus.pressurePad)
 						System.out.print("|  p  ");
 					else {
-						if (this.cells[i][j].getHasRock())
+						if (this.cells[j][i].getHasRock())
 							System.out.print("|  r  ");
 						else
 							System.out.print("|     ");
