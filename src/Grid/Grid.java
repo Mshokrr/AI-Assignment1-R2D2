@@ -1,7 +1,6 @@
 package Grid;
 
 import java.util.ArrayList;
-
 public class Grid {
 
 	private int width;
@@ -134,18 +133,8 @@ public class Grid {
 			this.cells[rockPositionX][rockPositionY].setHasRock(true);
 		}
 
-		this.reverseGrid();
-		
 		System.out.println("========\n\nThe Grid:\n");
 		this.displayGrid();
-	}
-
-	private void reverseGrid() {
-		Cell [][] rev = new Cell[this.height][this.width];
-		for (int i = 0; i < this.width; i++)
-			for (int j = 0; j < this.height; j++)
-				rev[i][j] = this.cells[j][i];
-		this.cells = rev;
 	}
 
 	public int getNumberOfPads() {
@@ -231,24 +220,17 @@ public class Grid {
 			System.out.print("   _  ");
 		}
 		System.out.println();
-		for (int i = 0; i < this.width; i++) {
+		for (int i = 0; i < this.height; i++) {
 			System.out.println();
-			for (int j = 0; j < this.height; j++) {
-				if (this.cells[i][j].getStatus() == CellStatus.obstacle)
+			for (int j = 0; j < this.width; j++) {
+				if (this.cells[j][i].getStatus() == CellStatus.obstacle)
 					System.out.print("|  o  ");
 				else {
-					if (this.cells[i][j].getStatus() == CellStatus.pressurePad)
-						if (this.cells[i][j] == getAgentPosition())
-							System.out.print("| A p ");
-						else
-							System.out.print("|  p  ");
+					if (this.cells[j][i].getStatus() == CellStatus.pressurePad)
+						System.out.print("|  p  ");
 					else {
-						if (this.cells[i][j].getHasRock())
+						if (this.cells[j][i].getHasRock())
 							System.out.print("|  r  ");
-						else if (this.cells[i][j] == getAgentPosition())
-							System.out.print("|  A  ");
-						else if (this.cells[i][j] == getTeleportPosition())
-							System.out.print("|  T  ");
 						else
 							System.out.print("|     ");
 					}
@@ -279,7 +261,8 @@ public class Grid {
 
 	public static void main(String[] args) {
 
-		new Grid(5, 5, 3, 3);
+		Grid g = new Grid(5, 5, 3, 3);
+
 	}
 
 }
