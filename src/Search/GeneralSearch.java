@@ -197,78 +197,78 @@ public class GeneralSearch {
 	}
 
 	public static void main(String[] args) {
-//		Cell currentPosition = new Cell();
-//		currentPosition.setX(4);
-//		currentPosition.setY(0);
-//
-//		Cell rockPosition = new Cell();
-//		rockPosition.setX(1);
-//		rockPosition.setY(2);
-//		
-//		Cell rockPosition2 = new Cell();
-//		rockPosition2.setX(1);
-//		rockPosition2.setY(3);
-//		
-//		Cell rockPosition3 = new Cell();
-//		rockPosition3.setX(2);
-//		rockPosition3.setY(4);
-//		
-//		Cell rockPosition4 = new Cell();
-//		rockPosition4.setX(3);
-//		rockPosition4.setY(3);
-//		
-//		Cell[] rockPositions = new Cell[3];
-//		rockPositions[0] = rockPosition;
-//		//rockPositions[1] = rockPosition2;
-//		rockPositions[1] = rockPosition3;
-//		rockPositions[2] = rockPosition4;
-//		
-//		MyState initState = new MyState(currentPosition, rockPositions.length, rockPositions, 0);
-//		
-//		Cell teleport = new Cell();
-//		teleport.setX(2);
-//		teleport.setY(2);
-//
-//		Cell obstacle = new Cell();
-//		obstacle.setX(0);
-//		obstacle.setY(0);
-//		
-//		Cell obstacle1 = new Cell();
-//		obstacle1.setX(2);
-//		obstacle1.setY(0);
-//		
-//		Cell[] obstacles = new Cell[2];
-//		obstacles[0] = obstacle;
-//		obstacles[1] = obstacle1;
-//
-//		Cell pad = new Cell();
-//		pad.setX(0);
-//		pad.setY(4);
-//		
-//		Cell pad1 = new Cell();
-//		pad1.setX(1);
-//		pad1.setY(0);
-//		
-//		Cell pad2 = new Cell();
-//		pad2.setX(3);
-//		pad2.setY(0);
-//		
-//		Cell pad3 = new Cell();
-//		pad3.setX(4);
-//		pad3.setY(1);
-//		
-//		Cell[] pads = new Cell[3];
-//		pads[0] = pad;
-//		//pads[1] = pad1;
-//		pads[1] = pad2;
-//		pads[2] = pad3;
-//
-//		String[] ops = new String[4];
-//		MyState[] stateSpace = new MyState[4];
-//		
-//		HelpR2D2 problemR2D2 = new HelpR2D2(ops, initState, stateSpace, teleport, obstacles, pads, 5, 5);
+		Cell currentPosition = new Cell();
+		currentPosition.setX(1);
+		currentPosition.setY(2);
+
+		Cell rockPosition = new Cell();
+		rockPosition.setX(1);
+		rockPosition.setY(2);
 		
-		HelpR2D2 problemR2D2 = new HelpR2D2(new Grid(5, 5, 3, 2));
+		Cell rockPosition2 = new Cell();
+		rockPosition2.setX(1);
+		rockPosition2.setY(3);
+		
+		Cell rockPosition3 = new Cell();
+		rockPosition3.setX(2);
+		rockPosition3.setY(4);
+		
+		Cell rockPosition4 = new Cell();
+		rockPosition4.setX(3);
+		rockPosition4.setY(3);
+		
+		Cell[] rockPositions = new Cell[3];
+		rockPositions[0] = rockPosition;
+		//rockPositions[1] = rockPosition2;
+		rockPositions[1] = rockPosition3;
+		rockPositions[2] = rockPosition4;
+		
+		MyState initState = new MyState(currentPosition, rockPositions.length, rockPositions, 0);
+		
+		Cell teleport = new Cell();
+		teleport.setX(2);
+		teleport.setY(2);
+
+		Cell obstacle = new Cell();
+		obstacle.setX(0);
+		obstacle.setY(0);
+		
+		Cell obstacle1 = new Cell();
+		obstacle1.setX(2);
+		obstacle1.setY(0);
+		
+		Cell[] obstacles = new Cell[2];
+		obstacles[0] = obstacle;
+		obstacles[1] = obstacle1;
+
+		Cell pad = new Cell();
+		pad.setX(0);
+		pad.setY(4);
+		
+		Cell pad1 = new Cell();
+		pad1.setX(1);
+		pad1.setY(0);
+		
+		Cell pad2 = new Cell();
+		pad2.setX(3);
+		pad2.setY(0);
+		
+		Cell pad3 = new Cell();
+		pad3.setX(4);
+		pad3.setY(1);
+		
+		Cell[] pads = new Cell[3];
+		pads[0] = pad;
+		//pads[1] = pad1;
+		pads[1] = pad2;
+		pads[2] = pad3;
+
+		String[] ops = new String[4];
+		MyState[] stateSpace = new MyState[4];
+		
+		HelpR2D2 problemR2D2 = new HelpR2D2(ops, initState, stateSpace, teleport, obstacles, pads, 5, 5);
+		
+//		HelpR2D2 problemR2D2 = new HelpR2D2(new Grid(5, 5, 3, 2));
 		
 //		for(Cell rockk: ((MyState)((Problem)problemR2D2).getInitState()).getRocksPositions()) {
 //			System.out.println("ROCK: "+ rockk.getX()+ ", "+ rockk.getY());

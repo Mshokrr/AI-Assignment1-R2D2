@@ -134,8 +134,18 @@ public class Grid {
 			this.cells[rockPositionX][rockPositionY].setHasRock(true);
 		}
 
+		this.reverseGrid();
+		
 		System.out.println("========\n\nThe Grid:\n");
 		this.displayGrid();
+	}
+
+	private void reverseGrid() {
+		Cell [][] rev = new Cell[this.height][this.width];
+		for (int i = 0; i < this.width; i++)
+			for (int j = 0; j < this.height; j++)
+				rev[i][j] = this.cells[j][i];
+		this.cells = rev;
 	}
 
 	public int getNumberOfPads() {
@@ -228,7 +238,10 @@ public class Grid {
 					System.out.print("|  o  ");
 				else {
 					if (this.cells[i][j].getStatus() == CellStatus.pressurePad)
-						System.out.print("|  p  ");
+						if (this.cells[i][j] == getAgentPosition())
+							System.out.print("| A p ");
+						else
+							System.out.print("|  p  ");
 					else {
 						if (this.cells[i][j].getHasRock())
 							System.out.print("|  r  ");
