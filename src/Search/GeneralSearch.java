@@ -268,7 +268,7 @@ public class GeneralSearch {
 	
 //		HelpR2D2 problemR2D2 = new HelpR2D2(ops, initState, stateSpace, teleport, obstacles, pads, 5, 5);
 		
-		HelpR2D2 problemR2D2 = new HelpR2D2(new Grid(5, 5, 3, 2));
+		HelpR2D2 problemR2D2 = new HelpR2D2(new Grid(5, 3, 3, 2));
 		
 		for(Cell rockk: ((MyState)((Problem)problemR2D2).getInitState()).getRocksPositions()) {
 			System.out.println("ROCK: "+ rockk.getX()+ ", "+ rockk.getY());
