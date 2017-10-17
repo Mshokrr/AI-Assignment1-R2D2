@@ -7,7 +7,7 @@ import Assignment1.*;
 public class Test {
 	
   public static void main(String [] args){
-    Grid g = new Grid(3, 3, 1, 1);
+    Grid g = new Grid(5, 3, 1, 1);
 		System.out.println();
 		System.out.println("Testing");
 		Cell [] rockPositions = g.getRockPositions();

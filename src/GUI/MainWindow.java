@@ -36,15 +36,16 @@ public class MainWindow extends JFrame{
 //			}
 //		}
 		
-		grid = new Grid(5,3,1,1);
+		grid = new Grid(3,3,1,1);
 		
 		for (int i = 0; i < grid.getWidth(); i++){
 			for (int j = 0; j < grid.getHeight(); j++){
 				Cell cell = new Cell();
 				cell.setBounds(20+(i*50), 100+(j*50), 50, 50);
-				if (grid.getCells()[i][j].getStatus() == CellStatus.obstacle){
-					cell.createObstacle();
-				}
+//				if (grid.getCells()[i][j].getStatus() == CellStatus.obstacle){
+//					cell.createObstacle();
+//				}
+				cell.addAgent();
 				mainPanel.add(cell);
 			}
 		}
