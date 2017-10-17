@@ -97,10 +97,16 @@ public class HelpR2D2 extends Problem {
 																	
 			if (state.getUnactivatedPads() == 0) {
 				System.out.println("Goal success");
-				MyState s = (MyState) node.getCurrentState();
-//				for(Cell rock: s.getRocksPositions()) {
-//					System.out.println(rock.getX()+", "+rock.getY());
-//				}
+				System.out.println("ROCKS --->");
+				for(Cell rock : state.getRocksPositions()) {
+					System.out.println(rock.getX() + "," + rock.getY());
+				}
+				System.out.println("<----------");
+				System.out.println("PADS --->");
+				for(Cell pad : this.getPadsPositions()) {
+					System.out.println(pad.getX() + "," + pad.getY());
+				}
+				System.out.println("<----------");
 				return true;
 			}
 
@@ -216,8 +222,8 @@ public class HelpR2D2 extends Problem {
 				upperCell.setY(rocksPositions[i].getY());
 				//check if the rock is on pad
 				for(int j = 0; j < this.padsPositions.length; j++) {
-					if(padsPositions[i].getX() == currentPosition.getX()
-							&& padsPositions[i].getY() == currentPosition.getY() - 1) {
+					if(padsPositions[j].getX() == currentPosition.getX()
+							&& padsPositions[j].getY() == currentPosition.getY() - 1) {
 						upperCell.setStatus(CellStatus.pressurePad);
 					}
 				}
@@ -319,8 +325,8 @@ public class HelpR2D2 extends Problem {
 				lowerCell.setY(rocksPositions[i].getY());
 				//check if the rock is on pad
 				for(int j = 0; j < this.padsPositions.length; j++) {
-					if(padsPositions[i].getX() == currentPosition.getX()
-							&& padsPositions[i].getY() == currentPosition.getY() + 1) {
+					if(padsPositions[j].getX() == currentPosition.getX()
+							&& padsPositions[j].getY() == currentPosition.getY() + 1) {
 						lowerCell.setStatus(CellStatus.pressurePad);
 					}
 				}
@@ -420,8 +426,8 @@ public class HelpR2D2 extends Problem {
 				leftCell.setY(rocksPositions[i].getY());
 				//check if the rock is on pad
 				for(int j = 0; j < this.padsPositions.length; j++) {
-					if(padsPositions[i].getY() == currentPosition.getY()
-							&& padsPositions[i].getX() == currentPosition.getX() - 1) {
+					if(padsPositions[j].getY() == currentPosition.getY()
+							&& padsPositions[j].getX() == currentPosition.getX() - 1) {
 						leftCell.setStatus(CellStatus.pressurePad);
 					}
 				}
@@ -457,6 +463,7 @@ public class HelpR2D2 extends Problem {
 			for(int i = 0; i < padsPositions.length; i++) {
 				if(padsPositions[i].getY() == currentPosition.getY()
 						&& padsPositions[i].getX() == currentPosition.getX() - 2) {
+					
 					unactivatedPads -= 1; break;
 				}
 			}
@@ -522,9 +529,11 @@ public class HelpR2D2 extends Problem {
 				rightCell.setY(rocksPositions[i].getY());
 				//check if the rock is on pad
 				for(int j = 0; j < this.padsPositions.length; j++) {
-					if(padsPositions[i].getY() == currentPosition.getY()
-							&& padsPositions[i].getX() == currentPosition.getX() + 1) {
+					if(padsPositions[j].getY() == currentPosition.getY()
+							&& padsPositions[j].getX() == currentPosition.getX() + 1) {
 						rightCell.setStatus(CellStatus.pressurePad);
+//						System.out.println("HEREEE"+((MyState)node.getCurrentState()).getUnactivatedPads());
+//						System.out.println("POSITION"+((MyState)node.getCurrentState()).getCurrentPosition().getX());
 					}
 				}
 				break;
