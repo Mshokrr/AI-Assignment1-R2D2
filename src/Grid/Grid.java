@@ -9,7 +9,6 @@ public class Grid {
 	private Cell[][] cells;
 
 	private Cell agentPosition;
-	public static Cell telePosition;
 	private int numberOfPads;
 	private int numberOfObstacles;
 
@@ -268,7 +267,6 @@ public class Grid {
 		for (int i = 0; i < this.width; i++) {
 			for (int j = 0; j < this.height; j++) {
 				if (cells[i][j].getStatus() == CellStatus.teleport) {
-					telePosition = cells[i][j];
 					return cells[i][j];
 				}
 			}

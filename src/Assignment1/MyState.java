@@ -60,8 +60,8 @@ public class MyState extends State {
 		if (n == 0)
 			return this.unactivatedPads;
 		else
-			return Math.abs(Grid.telePosition.getX() - currentPosition.getX())
-					+ Math.abs(Grid.telePosition.getY()
+			return Math.abs(HelpR2D2.telePosition.getX() - currentPosition.getX())
+					+ Math.abs(HelpR2D2.telePosition.getY()
 							- currentPosition.getY());
 	}
 

@@ -13,7 +13,7 @@ import Search.State;
 public class HelpR2D2 extends Problem {
 	
 	// Cell having teleport position
-	private Cell telePosition;
+	public static Cell telePosition;
 	// Array containing a Cell of obstacles
 	private Cell[] obstaclesPositions;
 	// Array containing a Cell of pressure pads
