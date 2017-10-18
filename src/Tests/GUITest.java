@@ -40,17 +40,6 @@ public class GUITest {
 		Cell teleport = g.getTeleportPosition();
 		Cell currentPosition = g.getAgentPosition();
 		
-		MyState initState = new MyState(currentPosition, g.getNumberOfPads(), rockPositions);
-		String [] ops = new String[4];
-		MyState [] stateSpace = new MyState[4];
-		HelpR2D2 problem1 = new HelpR2D2(ops, initState, stateSpace, teleport, obstaclePositions, padPositions, g.getWidth(), g.getHeight());
-
-		GeneralSearch gs = new GeneralSearch(problem1, QueuingFunction.DF);
-		Node n = gs.search();
-		while(n != null){
-			System.out.println("Operator: " + n.getOperator());
-			n = n.getParent();
-		}
 	}
 
 }
