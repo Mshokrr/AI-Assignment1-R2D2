@@ -155,12 +155,12 @@ public class Grid {
 					rockPositionY = (int) Math.floor(Math.random()
 							* this.height);
 				if (rockPositionX == 0 || rockPositionX == this.width - 1)
-					for (int j = 0; j < this.width; j++) {
+					for (int j = 0; j < this.height; j++) {
 						if (this.cells[rockPositionX][j].getStatus() == CellStatus.pressurePad)
 							f = true;
 					}
 				else if (rockPositionY == 0 || rockPositionY == this.width - 1)
-					for (int j = 0; j < this.height; j++) {
+					for (int j = 0; j < this.width; j++) {
 						if (this.cells[j][rockPositionY].getStatus() == CellStatus.pressurePad)
 							f = true;
 					}
