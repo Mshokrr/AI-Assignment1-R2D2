@@ -6,6 +6,10 @@ import javax.swing.*;
 
 public class Cell extends JPanel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JPanel panel;
 	JPanel obstacle;
 	JPanel pad;

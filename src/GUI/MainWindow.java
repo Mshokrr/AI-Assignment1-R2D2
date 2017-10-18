@@ -8,6 +8,10 @@ import Grid.*;
 
 public class MainWindow extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JPanel mainPanel;
 	Grid grid;
 	
@@ -133,7 +137,7 @@ public class MainWindow extends JFrame{
 	
 	
 	public static void main(String[] args) {
-		MainWindow w = new MainWindow();
+		new MainWindow();
 	}
 
 	public Grid getGrid() {

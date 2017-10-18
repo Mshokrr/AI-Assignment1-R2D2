@@ -70,8 +70,8 @@ public class GeneralSearch {
 				// for DF only as checking repeated states for BF is very
 				// expensive and useless due to checking leaves on same level
 				// once which are not repeated
-//				this.qingFunc == QueuingFunction.DF&&
-				if ( this.problem.pastState(node))
+				// this.qingFunc == QueuingFunction.DF&&
+				if (this.problem.pastState(node))
 					continue; // check if state is already traversed before
 				if (problem.goalTest(node)) {
 					System.out.println("SUCCESS!!");
@@ -215,16 +215,17 @@ public class GeneralSearch {
 		}
 		return nodes;
 	}
-	
-	//A method to regenerate a Grid from the search nodes to visualize every step
-	public static Grid visualize(GeneralSearch gs, Node n){
-		Cell[] pads = ((HelpR2D2)gs.problem).getPadsPositions();
-		Cell tele = ((HelpR2D2)gs.problem).getTelePosition();
-		Cell[] obstacles = ((HelpR2D2)gs.problem).getObstaclesPositions();
-		int width = ((HelpR2D2)gs.problem).getWidth();
-		int height = ((HelpR2D2)gs.problem).getHeight();
-		Cell[] rocks = ((MyState)n.getCurrentState()).getRocksPositions();
-		Cell position = ((MyState)n.getCurrentState()).getCurrentPosition();
+
+	// A method to regenerate a Grid from the search nodes to visualize every
+	// step
+	public static Grid visualize(GeneralSearch gs, Node n) {
+		Cell[] pads = ((HelpR2D2) gs.problem).getPadsPositions();
+		Cell tele = ((HelpR2D2) gs.problem).getTelePosition();
+		Cell[] obstacles = ((HelpR2D2) gs.problem).getObstaclesPositions();
+		int width = ((HelpR2D2) gs.problem).getWidth();
+		int height = ((HelpR2D2) gs.problem).getHeight();
+		Cell[] rocks = ((MyState) n.getCurrentState()).getRocksPositions();
+		Cell position = ((MyState) n.getCurrentState()).getCurrentPosition();
 		return new Grid(width, height, obstacles, pads, rocks, tele, position);
 	}
 
@@ -233,8 +234,6 @@ public class GeneralSearch {
 	public static Deque<Grid> search(Grid grid, QueuingFunction strategy,
 			boolean visualization) throws NoSolutionException {
 
-		if (visualization)
-			grid.displayGrid();
 		// Initialize a general search problem
 		GeneralSearch gs = new GeneralSearch(grid, strategy);
 		// Performs search
@@ -253,10 +252,12 @@ public class GeneralSearch {
 		// Displaying Solution Path from Start to End
 		Deque<String> path = new LinkedList<String>();
 		Deque<Grid> grids = new LinkedList<>();
+		Deque<Grid> grids1 = new LinkedList<>();
 		while (n != null) {
 			if (!n.getOperator().equals(""))
 				path.addFirst(n.getOperator());
-			grids.addFirst(visualize(gs,n));
+			grids.addFirst(visualize(gs, n));
+			grids1.addFirst(visualize(gs, n));
 			n = n.getParent();
 		}
 		while (!path.isEmpty()) {
@@ -266,8 +267,13 @@ public class GeneralSearch {
 		}
 		System.out.println();
 		System.out.println();
-		
-		return grids;
+
+		if (visualization)
+			while (!grids.isEmpty()) {
+				grids.pop().displayGrid();
+			}
+
+		return grids1;
 	}
 
 	// public static void main(String[] args) {

@@ -1,7 +1,6 @@
 package Assignment1;
 
 import Grid.Cell;
-import Grid.Grid;
 import Search.State;
 
 public class MyState extends State {

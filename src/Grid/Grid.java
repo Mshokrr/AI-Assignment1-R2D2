@@ -102,7 +102,9 @@ public class Grid {
 	// Generates a grid with a random dimensions, number of obstacles, rocks and
 	// pads
 	public static Grid genGrid() {
-		return new Grid();
+		Grid g = new Grid();
+		g.displayGrid();
+		return g;
 
 	}
 
