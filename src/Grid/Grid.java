@@ -36,7 +36,6 @@ public class Grid {
 		this.cells = cells;
 	}
 
-
 	public Grid() {
 		this.width = 3 + ((int) (Math.random() * 4));
 		this.height = 3 + ((int) (Math.random() * 4));
@@ -56,33 +55,43 @@ public class Grid {
 		this.numberOfObstacles = numberOfObstacles;
 		this.genGrid(numberOfObstacles, numberOfPads);
 	}
-	
-	public Grid(int width, int height, Cell [] obstacles, Cell [] pads, Cell [] rocks, Cell teleport, Cell agent){
+
+	public Grid(int width, int height, Cell[] obstacles, Cell[] pads,
+			Cell[] rocks, Cell teleport, Cell agent) {
 		this.width = width;
 		this.height = height;
+		this.agentPosition = agent;
 		this.cells = new Cell[this.width][this.height];
-		for (Cell c : obstacles){
-			int x = c.getX();
-			int y = c.getY();
-			cells[x][y] = c;
-		}	
-		for (Cell c : pads){
+		for (Cell c : obstacles) {
 			int x = c.getX();
 			int y = c.getY();
 			cells[x][y] = c;
 		}
-		
-		for (Cell c : rocks){
+		for (Cell c : pads) {
 			int x = c.getX();
 			int y = c.getY();
 			cells[x][y] = c;
 		}
-		
-		this.cells[teleport.getX()][teleport.getY()] = teleport;
+
+		for (Cell c : rocks) {
+			int x = c.getX();
+			int y = c.getY();
+			if (cells[x][y] != null)
+				c.setStatus(cells[x][y].getStatus());
+			cells[x][y] = c;
+		}
+
 		this.cells[agent.getX()][agent.getY()] = agent;
-		for (int i = 0; i < this.width; i++){
-			for (int j = 0; j < this.height; j++){
-				if (this.cells[i][j] == null){
+
+		if (this.cells[teleport.getX()][teleport.getY()] == null)
+			this.cells[teleport.getX()][teleport.getY()] = teleport;
+		else
+			this.cells[teleport.getX()][teleport.getY()]
+					.setStatus(CellStatus.teleport);
+
+		for (int i = 0; i < this.width; i++) {
+			for (int j = 0; j < this.height; j++) {
+				if (this.cells[i][j] == null) {
 					this.cells[i][j] = new Cell();
 					this.cells[i][j].setName("R" + i + " " + "C" + j);
 				}
@@ -333,26 +342,27 @@ public class Grid {
 			for (int j = 0; j < this.width; j++) {
 				if (this.cells[j][i].getStatus() == CellStatus.obstacle)
 					System.out.print("|  o  ");
-				else {
-					if (this.cells[j][i].getStatus() == CellStatus.pressurePad)
-						if (this.cells[j][i] == getAgentPosition())
-							System.out.print("| A p ");
-						else
-							System.out.print("|  p  ");
-					else {
-						if (this.cells[j][i].getHasRock())
-							System.out.print("|  r  ");
-						else if (this.cells[j][i] == getTeleportPosition())
-							if (this.cells[j][i] == getAgentPosition())
-								System.out.print("| A T ");
-							else
-								System.out.print("|  T  ");
-						else if (this.cells[j][i] == getAgentPosition())
-							System.out.print("|  A  ");
-						else
-							System.out.print("|     ");
-					}
-				}
+				else if (this.cells[j][i].getStatus() == CellStatus.pressurePad
+						&& (this.cells[j][i].getHasRock()))
+					System.out.print("| r p ");
+				else if (this.cells[j][i].getStatus() == CellStatus.pressurePad) {
+					if (this.cells[j][i] == getAgentPosition())
+						System.out.print("| A p ");
+					else
+						System.out.print("|  p  ");
+				} else if (this.cells[j][i].getHasRock())
+					System.out.print("|  r  ");
+				else if (this.cells[j][i].getStatus() == CellStatus.teleport) {
+					if (this.cells[j][i] == getAgentPosition())
+						System.out.print("| A T ");
+					else if (this.cells[j][i].getHasRock())
+						System.out.print("| r T ");
+					else
+						System.out.print("|  T  ");
+				} else if (this.cells[j][i] == getAgentPosition())
+					System.out.print("|  A  ");
+				else
+					System.out.print("|     ");
 			}
 			System.out.println("|");
 			for (int k = 0; k < this.width; k++) {

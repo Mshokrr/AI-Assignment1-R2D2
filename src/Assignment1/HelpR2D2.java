@@ -200,6 +200,7 @@ public class HelpR2D2 extends Problem {
 		Cell[] result = new Cell[rocksPositions.length];
 		for (int i = 0; i < result.length; i++) {
 			result[i] = new Cell();
+			result[i].setHasRock(true);
 			result[i].setX(rocksPositions[i].getX());
 			result[i].setY(rocksPositions[i].getY());
 		}
