@@ -47,7 +47,7 @@ public class HelpR2D2 extends Problem {
 	}
 
 	public void setTelePosition(Cell telePosition) {
-		this.telePosition = telePosition;
+		HelpR2D2.telePosition = telePosition;
 	}
 
 	public Cell[] getObstaclesPositions() {
@@ -71,7 +71,7 @@ public class HelpR2D2 extends Problem {
 			int width, int height) {
 		super.setOperators(operators);
 		super.setInitState(initState);
-		this.telePosition = telePosition;
+		HelpR2D2.telePosition = telePosition;
 		this.obstaclesPositions = obstaclesPosition;
 		this.padsPositions = padsPositions;
 		this.expandedStates = new ArrayList<MyState>();
@@ -83,7 +83,7 @@ public class HelpR2D2 extends Problem {
 
 	public HelpR2D2(Grid grid) {
 		super.setOperators(new String[4]);
-		this.telePosition = grid.getTeleportPosition();
+		HelpR2D2.telePosition = grid.getTeleportPosition();
 		this.obstaclesPositions = grid.getObstaclePositions();
 		this.padsPositions = grid.getPadPositions();
 		this.expandedStates = new ArrayList<MyState>();

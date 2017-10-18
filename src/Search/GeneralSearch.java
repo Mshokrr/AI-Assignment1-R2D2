@@ -213,10 +213,15 @@ public class GeneralSearch {
 		}
 		return nodes;
 	}
+	
+	public static Grid visualize(GeneralSearch g, Node n){
+		
+		return new Grid();
+	}
 
 	// Search Method as required takes a grid and a queuing strategy and boolean
 	// for visualizing or not
-	public static void search(Grid grid, QueuingFunction strategy,
+	public static GeneralSearch search(Grid grid, QueuingFunction strategy,
 			boolean visualization) throws NoSolutionException {
 
 		if (visualization)
@@ -250,6 +255,8 @@ public class GeneralSearch {
 		}
 		System.out.println();
 		System.out.println();
+		
+		return gs;
 	}
 
 	// public static void main(String[] args) {
