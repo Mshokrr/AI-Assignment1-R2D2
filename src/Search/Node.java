@@ -1,13 +1,16 @@
 package Search;
 
-public class Node implements Comparable {
+public class Node implements Comparable<Node> {
+
+	//Class representing the 5 tuple of any search node for a general search tree
 	private Node parent;
 	private State currentState;
 	private int depth;
 	private int pathCost;
 	private String operator;
+	//order variable is used to order the node in the priority queue in case of greedy or A*
 	private int order;
-	
+
 	public int getOrder() {
 		return order;
 	}
@@ -56,7 +59,8 @@ public class Node implements Comparable {
 		this.operator = operator;
 	}
 
-	public Node(Node parent, State currentState, int depth, int pathCost, String operator){
+	public Node(Node parent, State currentState, int depth, int pathCost,
+			String operator) {
 		this.parent = parent;
 		this.currentState = currentState;
 		this.depth = depth;
@@ -66,11 +70,12 @@ public class Node implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		Node n = (Node) o;
-		if(n.order > this.order) return -1;
-		else if(n.order < this.order) return 1;
+	public int compareTo(Node o) {
+		if (o.order > this.order)
+			return -1;
+		else if (o.order < this.order)
+			return 1;
 		return 0;
 	}
-	
+
 }
