@@ -11,12 +11,14 @@ public class Test {
 		boolean finish = false;
 		do {
 			try {
-				Grid g = new Grid();
+				Grid g = Grid.genGrid();
 				GeneralSearch.search(g, QueuingFunction.DF, true);
 				GeneralSearch.search(g, QueuingFunction.BF, false);
 				GeneralSearch.search(g, QueuingFunction.ID, false);
 				GeneralSearch.search(g, QueuingFunction.GR1, false);
 				GeneralSearch.search(g, QueuingFunction.AS1, false);
+				GeneralSearch.search(g, QueuingFunction.GR2, false);
+				GeneralSearch.search(g, QueuingFunction.AS2, false);
 				finish = true;
 			} catch (NoSolutionException e) {
 
