@@ -56,6 +56,39 @@ public class Grid {
 		this.numberOfObstacles = numberOfObstacles;
 		this.genGrid(numberOfObstacles, numberOfPads);
 	}
+	
+	public Grid(int width, int height, Cell [] obstacles, Cell [] pads, Cell [] rocks, Cell teleport, Cell agent){
+		this.width = width;
+		this.height = height;
+		this.cells = new Cell[this.width][this.height];
+		for (Cell c : obstacles){
+			int x = c.getX();
+			int y = c.getY();
+			cells[x][y] = c;
+		}	
+		for (Cell c : pads){
+			int x = c.getX();
+			int y = c.getY();
+			cells[x][y] = c;
+		}
+		
+		for (Cell c : rocks){
+			int x = c.getX();
+			int y = c.getY();
+			cells[x][y] = c;
+		}
+		
+		this.cells[teleport.getX()][teleport.getY()] = teleport;
+		this.cells[agent.getX()][agent.getY()] = agent;
+		for (int i = 0; i < this.width; i++){
+			for (int j = 0; j < this.height; j++){
+				if (this.cells[i][j] == null){
+					this.cells[i][j] = new Cell();
+					this.cells[i][j].setName("R" + i + " " + "C" + j);
+				}
+			}
+		}
+	}
 
 	// Generates a grid with a random dimensions, number of obstacles, rocks and
 	// pads
