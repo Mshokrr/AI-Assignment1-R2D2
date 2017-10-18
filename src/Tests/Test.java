@@ -10,7 +10,7 @@ public class Test {
 		boolean finish = false;
 		do {
 			try {
-				Grid g = new Grid();
+				Grid g = Grid.genGrid();
 				GeneralSearch.search(g, QueuingFunction.DF, true);
 				GeneralSearch.search(g, QueuingFunction.BF, false);
 				GeneralSearch.search(g, QueuingFunction.ID, false);
