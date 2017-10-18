@@ -37,10 +37,7 @@ public class Grid {
 		this.cells = cells;
 	}
 
-<<<<<<< HEAD
-	public Grid(){
-		genGrid();
-=======
+
 	public Grid() {
 		this.width = 3 + ((int) (Math.random() * 4));
 		this.height = 3 + ((int) (Math.random() * 4));
@@ -51,7 +48,6 @@ public class Grid {
 		this.numberOfPads = 1 + ((int) (Math.random() * (this.height
 				+ this.width - 2)));
 		genGrid(numberOfObstacles, numberOfPads);
->>>>>>> b05393d1eef991e8f9a01841fce8428744d78f28
 	}
 
 	public Grid(int width, int height, int numberOfPads, int numberOfObstacles) {
