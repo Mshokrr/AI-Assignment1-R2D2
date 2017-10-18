@@ -96,17 +96,17 @@ public class HelpR2D2 extends Problem {
 				&& state.getCurrentPosition().getY() == this.getTelePosition().getY()) { 
 																	
 			if (state.getUnactivatedPads() == 0) {
-				System.out.println("Goal success");
-				System.out.println("ROCKS --->");
-				for(Cell rock : state.getRocksPositions()) {
-					System.out.println(rock.getX() + "," + rock.getY());
-				}
-				System.out.println("<----------");
-				System.out.println("PADS --->");
-				for(Cell pad : this.getPadsPositions()) {
-					System.out.println(pad.getX() + "," + pad.getY());
-				}
-				System.out.println("<----------");
+//				System.out.println("Goal success");
+//				System.out.println("ROCKS --->");
+//				for(Cell rock : state.getRocksPositions()) {
+//					System.out.println(rock.getX() + "," + rock.getY());
+//				}
+//				System.out.println("<----------");
+//				System.out.println("PADS --->");
+//				for(Cell pad : this.getPadsPositions()) {
+//					System.out.println(pad.getX() + "," + pad.getY());
+//				}
+//				System.out.println("<----------");
 				return true;
 			}
 

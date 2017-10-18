@@ -271,7 +271,7 @@ public class GeneralSearch {
 		// HelpR2D2 problemR2D2 = new HelpR2D2(ops, initState, stateSpace,
 		// teleport, obstacles, pads, 5, 5);
 
-		HelpR2D2 problemR2D2 = new HelpR2D2(new Grid(5, 3, 3, 2));
+		HelpR2D2 problemR2D2 = new HelpR2D2(new Grid(7, 5, 4, 2));
 
 //		for (Cell rockk : ((MyState) ((Problem) problemR2D2).getInitState())
 //				.getRocksPositions()) {
@@ -288,13 +288,13 @@ public class GeneralSearch {
 		GeneralSearch gs = new GeneralSearch(problemR2D2, QueuingFunction.BF);
 		Node n = gs.search();
 		if (n != null)
-			System.out.println("max depth: " + n.getDepth());
+			System.out.println("Max Depth: " + n.getDepth());
 		else
 			System.out.println("No Solution");
 		Deque<String> path = new LinkedList<String>();
-		System.out.println(gs.numberOfExpandedNodes);
+		System.out.println("Expanded Nodes: " + gs.numberOfExpandedNodes);
 		while (n != null) {
-			path.addFirst(n.getOperator()
+			path.addFirst(n.getOperator() + " "
 					+ ((MyState) n.getCurrentState()).getUnactivatedPads());
 			n = n.getParent();
 
