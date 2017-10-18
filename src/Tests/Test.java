@@ -16,6 +16,8 @@ public class Test {
 				GeneralSearch.search(g, QueuingFunction.ID, false);
 				GeneralSearch.search(g, QueuingFunction.GR1, false);
 				GeneralSearch.search(g, QueuingFunction.AS1, false);
+				GeneralSearch.search(g, QueuingFunction.GR2, false);
+				GeneralSearch.search(g, QueuingFunction.AS2, false);
 				finish = true;
 			} catch (NoSolutionException e) {
 

@@ -1,6 +1,7 @@
 package Assignment1;
 
 import Grid.Cell;
+import Grid.Grid;
 import Search.State;
 
 public class MyState extends State {
@@ -56,7 +57,12 @@ public class MyState extends State {
 	// first heuristic formula
 	// and if n is 1 is will use the heuristic formula
 	public int heuristic(int n) {
-		return this.unactivatedPads;
+		if (n == 0)
+			return this.unactivatedPads;
+		else
+			return Math.abs(Grid.telePosition.getX() - currentPosition.getX())
+					+ Math.abs(Grid.telePosition.getY()
+							- currentPosition.getY());
 	}
 
 }
