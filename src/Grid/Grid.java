@@ -177,7 +177,7 @@ public class Grid {
 						if (this.cells[rockPositionX][j].getStatus() == CellStatus.pressurePad)
 							f = true;
 					}
-				else if (rockPositionY == 0 || rockPositionY == this.width - 1)
+				else if (rockPositionY == 0 || rockPositionY == this.height - 1)
 					for (int j = 0; j < this.width; j++) {
 						if (this.cells[j][rockPositionY].getStatus() == CellStatus.pressurePad)
 							f = true;
