@@ -69,7 +69,8 @@ public class MainWindow extends JFrame{
 		rockLabel.setBounds(290, 80, 50, 30);
 		mainPanel.add(rockLabel);
 				
-		grid = new Grid(3,3,1,1);
+		grid = Grid.genGrid();
+		grid.displayGrid();
 		
 		for (int i = 0; i < grid.getWidth(); i++){
 			for (int j = 0; j < grid.getHeight(); j++){
