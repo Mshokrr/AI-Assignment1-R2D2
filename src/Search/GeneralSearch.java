@@ -228,13 +228,17 @@ public class GeneralSearch {
 		//Displaying Solution Path from Start to End
 		Deque<String> path = new LinkedList<String>();
 		while (n != null) {
-			if(n.getOperator() != null)
+			if(!n.getOperator().equals(""))
 				path.addFirst(n.getOperator());
 			n = n.getParent();
 		}
 		while (!path.isEmpty()) {
-			System.out.print(path.pop() + "->");
+			System.out.print(path.pop());
+			if(!path.isEmpty())
+				System.out.print("->");
 		}
+		System.out.println();
+		System.out.println();
 	}
 	
 //	public static void main(String[] args) {
