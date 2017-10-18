@@ -1,49 +1,25 @@
 package Tests;
 
-import Grid.*;
-import Search.*;
-import Assignment1.*;
+import Grid.Grid;
+import Search.GeneralSearch;
+import Search.QueuingFunction;
 
 public class Test {
-	
-  public static void main(String [] args){
-    Grid g = new Grid(4, 4, 1, 1);
-		System.out.println();
-		System.out.println("Testing");
-		Cell [] rockPositions = g.getRockPositions();
-		System.out.println("Rocks");
-		for (int i = 0; i < rockPositions.length; i++){
-			Cell c = rockPositions[i];
-			System.out.print("R" + c.getX() + " C" + c.getY() + " ");
-		}
-		System.out.println();
-		Cell [] obstaclePositions = g.getObstaclePositions();
-		System.out.println("Obstacles");
-		for (int i = 0; i < obstaclePositions.length; i++){
-			Cell c = obstaclePositions[i];
-			System.out.print("R" + c.getX() + " C" + c.getY() + " ");
-		}
-		System.out.println();
-		Cell [] padPositions = g.getPadPositions();
-		System.out.println("Pads");
-		for (int i = 0; i < padPositions.length; i++){
-			Cell c = padPositions[i];
-			System.out.print("R" + c.getX() + " C" + c.getY() + " ");
-		}
-		System.out.println();
-		Cell teleport = g.getTeleportPosition();
-		Cell currentPosition = g.getAgentPosition();
 
-		MyState initState = new MyState(currentPosition, g.getNumberOfPads(), rockPositions, 0);
-		String [] ops = new String[4];
-		MyState [] stateSpace = new MyState[4];
-		HelpR2D2 problem1 = new HelpR2D2(ops, initState, stateSpace, teleport, obstaclePositions, padPositions, g.getWidth(), g.getHeight());
+	public static void main(String[] args) {
+		boolean finish = false;
+		do {
+			try {
+				Grid g = new Grid();
+				GeneralSearch.search(g, QueuingFunction.BF, true);
+				GeneralSearch.search(g, QueuingFunction.DF, false);
+				GeneralSearch.search(g, QueuingFunction.ID, false);
+				GeneralSearch.search(g, QueuingFunction.GR1, false);
+				GeneralSearch.search(g, QueuingFunction.AS1, false);
+				finish = true;
+			} catch (NoSolutionException e) {
 
-		GeneralSearch gs = new GeneralSearch(problem1, QueuingFunction.DF);
-		Node n = gs.search();
-		while(n != null){
-			System.out.println("Operator: " + n.getOperator());
-			n = n.getParent();
-		}
-  }
+			}
+		} while (!finish);
+	}
 }

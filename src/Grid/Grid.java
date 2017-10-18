@@ -10,6 +10,7 @@ public class Grid {
 
 	private Cell agentPosition;
 	private int numberOfPads;
+	private int numberOfObstacles;
 
 	public int getWidth() {
 		return width;
@@ -34,18 +35,35 @@ public class Grid {
 	public void setCells(Cell[][] cells) {
 		this.cells = cells;
 	}
+	
+	public Grid(){
+		genGrid();
+	}
 
 	public Grid(int width, int height, int numberOfPads, int numberOfObstacles) {
 		this.width = width;
 		this.height = height;
 		this.numberOfPads = numberOfPads;
-		System.out.println("\n\n\t\tWELCOME\n");
-		System.out.println("Escape mission of R2D2 from the Death Star");
-		System.out.println("========\n");
+		this.numberOfObstacles = numberOfObstacles;
 		this.genGrid(numberOfObstacles, numberOfPads);
 	}
 
+	//Generates a grid with a random dimensions, number of obstacles, rocks and pads
+	public void genGrid(){
+		this.width = 3 + ((int) (Math.random() * 4));
+		this.height = 3 + ((int) (Math.random() * 4));
+		//Random number of obstacles depending on bigger of width and height
+		this.numberOfObstacles = (int) (Math.random() * ((this.height > this.width) ? this.height : this.width));
+		//Random number of pad depending on summation of width and height - 2
+		this.numberOfPads = 1 + ((int) (Math.random() * (this.height + this.width - 2)));
+		genGrid(numberOfObstacles, numberOfPads);
+	}
+	
+	//Generates a grid with a certain dimensions, number of obstacles, rocks and pads
 	public void genGrid(int numberOfObstacles, int numberOfPads) {
+		System.out.println("\n\n\t\tWELCOME\n");
+		System.out.println("Escape mission of R2D2 from the Death Star");
+		System.out.println("========\n");
 		System.out.println("=> Width = " + width);
 		System.out.println("=> Height = " + height);
 		System.out.println("=> Generating grid..\n");
@@ -318,12 +336,6 @@ public class Grid {
 		// System.out.println();
 		// }
 		// }
-	}
-
-	public static void main(String[] args) {
-
-//		new Grid(5, 5, 3, 3);
-
 	}
 
 }

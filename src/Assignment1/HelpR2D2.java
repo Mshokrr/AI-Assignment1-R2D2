@@ -166,6 +166,7 @@ public class HelpR2D2 extends Problem {
 		// shortest one
 		if (temp != null)
 			expandedStates.remove(temp);
+		expandedStates.add(state);
 		return false;
 	}
 

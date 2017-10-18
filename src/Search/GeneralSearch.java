@@ -7,6 +7,7 @@ import java.util.PriorityQueue;
 
 import Assignment1.HelpR2D2;
 import Grid.Grid;
+import Tests.NoSolutionException;
 //Implementing the General Search algorithm
 public class GeneralSearch {
 	
@@ -206,7 +207,7 @@ public class GeneralSearch {
 	}
 
 	//Search Method as required takes a grid and a queuing strategy and boolean for visualizing or not
-	public static void search(Grid grid, QueuingFunction strategy, boolean visualization){
+	public static void search(Grid grid, QueuingFunction strategy, boolean visualization) throws NoSolutionException{
 		
 		if(visualization)
 			grid.displayGrid();
@@ -215,10 +216,13 @@ public class GeneralSearch {
 		//Performs search
 		Node n = gs.search();
 		//Checks for a solution
+		System.out.println("Using Expansion Strategy: " + strategy);
 		if (n != null)
 			System.out.println("Solution Depth: " + n.getPathCost());
-		else
+		else{
 			System.out.println("No Solution");
+			throw new NoSolutionException();
+		}
 		System.out.println("Expanded Nodes: " + ((HelpR2D2)gs.getProblem()).getNumberOfExpandedNodes());
 
 		//Displaying Solution Path from Start to End
@@ -233,9 +237,9 @@ public class GeneralSearch {
 		}
 	}
 	
-	public static void main(String[] args) {
-		
-		search(new Grid(5,4,3,1), QueuingFunction.BF, true);
-		
-	}
+//	public static void main(String[] args) {
+//		
+//		search(new Grid(), QueuingFunction.DF, true);
+//		
+//	}
 }
