@@ -1,6 +1,8 @@
 package GUI;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -76,7 +78,49 @@ public class MainWindow extends JFrame{
 		
 		this.drawGrid(Grid.genGrid());
 		grid.displayGrid();
-	
+		
+		JButton df = new JButton("DF");
+		df.setBounds(350, 100, 100, 30);
+		df.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		JButton bf = new JButton("BF");
+		bf.setBounds(350, 150, 100, 30);
+		JButton id = new JButton("ID");
+		id.setBounds(350, 200, 100, 30);
+		JButton uc = new JButton("UC");
+		uc.setBounds(350, 250, 100, 30);
+		JButton greedy1 = new JButton("Greedy 1");
+		greedy1.setBounds(350, 300, 100, 30);
+		JButton greedy2 = new JButton("Greedy 2");
+		greedy2.setBounds(350, 350, 100, 30);
+		JButton aStar1 = new JButton("A* 1");
+		aStar1.setBounds(350, 400, 100, 30);
+		JButton aStar2 = new JButton("A* 2");
+		aStar2.setBounds(350, 450, 100, 30);	
+		JButton next = new JButton("Next");
+		next.setBounds(500, 350, 100, 30);		
+		mainPanel.add(df);
+		mainPanel.add(bf);
+		mainPanel.add(id);
+		mainPanel.add(uc);
+		mainPanel.add(greedy1);
+		mainPanel.add(greedy2);
+		mainPanel.add(aStar1);
+		mainPanel.add(aStar2);
+		mainPanel.add(next);
+		
+		JLabel path = new JLabel("Veeeeryyyyy looooong teeeeeeeeext!");
+		path.setBounds(50, 500, 550, 50);
+		path.setForeground(Color.white);
+		
+		mainPanel.add(path);
 		this.add(mainPanel);
 		this.validate();
 		this.repaint();
