@@ -11,7 +11,7 @@ public class Cell extends JPanel{
 	JPanel pad;
 	JPanel rock;
 	JPanel teleport;
-	JLabel agent;
+	JPanel agent;
 
 	public Cell() {
 		this.setSize(50, 50);
@@ -44,10 +44,9 @@ public class Cell extends JPanel{
 		teleport.setVisible(false);
 		panel.add(teleport);
 		
-		agent = new JLabel(new ImageIcon("r2d2.jpg"));
-		agent.setBounds(15, 15, 20, 20);
+		agent = new JPanel();
+		agent.setBackground(Color.blue);
 		agent.setVisible(false);
-		panel.add(agent);
 		
 		this.add(panel);
 		this.validate();
@@ -65,7 +64,7 @@ public class Cell extends JPanel{
 		this.repaint();
 	}
 	
-	public void addRockToCell(){	
+	public void addRock(){	
 		rock.setBounds(15, 15, 19, 19);
 		rock.setVisible(true);
 		this.panel.add(rock);
@@ -81,6 +80,14 @@ public class Cell extends JPanel{
 		this.repaint();
 	}
 	
+	public void addRockToTeleport(){
+		rock.setBounds(35, 35, 19, 19);
+		rock.setVisible(true);
+		this.teleport.add(rock);
+		this.revalidate();
+		this.repaint();
+	}
+	
 	public void createTeleport(){
 		teleport.setVisible(true);
 		this.revalidate();
@@ -88,8 +95,27 @@ public class Cell extends JPanel{
 	}
 	
 	public void addAgent(){
+		agent.setBounds(15, 15, 20, 20);
 		agent.setVisible(true);
+		this.panel.add(agent);
 		this.revalidate();
 		this.repaint();
 	}
+	
+	public void addAgentToPad(){
+		agent.setBounds(5, 5, 20, 20);
+		agent.setVisible(true);
+		this.pad.add(agent);	
+		this.revalidate();
+		this.repaint();
+	}
+	
+	public void addAgentTeleport(){
+		agent.setBounds(5, 5, 20, 20);
+		agent.setVisible(true);
+		this.teleport.add(agent);	
+		this.revalidate();
+		this.repaint();
+	}
+
 }
