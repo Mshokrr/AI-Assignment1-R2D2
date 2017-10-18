@@ -52,7 +52,6 @@ public class Grid {
 		System.out.println("Initialization Log:\n");
 
 		// Initialization Constraints
-
 		if (this.width < 3) {
 			System.out
 					.println("=> Width should be a minimum of 3, auto-initializing to 3");
@@ -64,12 +63,8 @@ public class Grid {
 			this.height = 3;
 		}
 
-		//
-
 		this.cells = new Cell[this.width][this.height];
-
 		// Initializing Cells
-
 		for (int i = 0; i < this.width; i++) {
 			for (int j = 0; j < this.height; j++) {
 				Cell c = new Cell();
@@ -81,7 +76,6 @@ public class Grid {
 		}
 
 		// Initializing Obstacles, Pads and Rocks
-
 		while (((this.width * this.height) / 7) < numberOfPads) {
 			numberOfPads /= 2;
 			this.numberOfPads /= 2;
@@ -91,12 +85,12 @@ public class Grid {
 		}
 
 		// Initializing Agent position
-
 		this.agentPosition = cells[(int) (Math.random() * this.width)][(int) (Math
 				.random() * height)];
 		System.out.println("=> Initializing agent at "
 				+ this.agentPosition.getName());
-
+		
+		// Initializing Teleport position
 		int teleportPositionX = (int) (Math.random() * this.width);
 		int teleportPositionY = (int) (Math.random() * this.height);
 		this.cells[teleportPositionX][teleportPositionY]
@@ -109,11 +103,13 @@ public class Grid {
 		System.out.println("=> Initializing with " + numberOfObstacles
 				+ " pads and rocks");
 
+		// Initializing Obstacles position
 		for (int i = 0; i < numberOfObstacles; i++) {
 			int obstaclePositionX = (int) Math
 					.floor(Math.random() * this.width);
 			int obstaclePositionY = (int) Math.floor(Math.random()
 					* this.height);
+			//checking random Cell can have a obstacle
 			if (!(this.agentPosition.getX() == obstaclePositionX && this.agentPosition
 					.getY() == obstaclePositionY)
 					&& (this.cells[obstaclePositionX][obstaclePositionY]
@@ -125,9 +121,11 @@ public class Grid {
 			}
 		}
 
+		// Initializing Pressure Pads position
 		for (int i = 0; i < numberOfPads; i++) {
 			int padPositionX = (int) Math.floor(Math.random() * this.width);
 			int padPositionY = (int) Math.floor(Math.random() * this.height);
+			//checking random Cell can have a pressure pad
 			while (this.cells[padPositionX][padPositionY].getHasRock()
 					|| !(this.cells[padPositionX][padPositionY].getStatus() == CellStatus.free)) {
 				padPositionX = (int) Math.floor(Math.random() * this.width);
@@ -140,6 +138,7 @@ public class Grid {
 
 		}
 
+		// Initializing Rocks position
 		int rockPositionX = 0;
 		int rockPositionY = 0;
 		boolean f = false;
@@ -147,13 +146,14 @@ public class Grid {
 			do {
 				f = false;
 				rockPositionX = (int) Math.floor(Math.random() * this.width);
-				rockPositionY = 0;
+				//Handling no Rocks on the corner
 				if (rockPositionX == 0 || rockPositionX == this.width - 1)
 					rockPositionY = 1 + ((int) Math.floor(Math.random()
 							* (this.height - 2)));
 				else
 					rockPositionY = (int) Math.floor(Math.random()
 							* this.height);
+				//Handling if a rock is on the edge there should be a Pad on this edge
 				if (rockPositionX == 0 || rockPositionX == this.width - 1)
 					for (int j = 0; j < this.height; j++) {
 						if (this.cells[rockPositionX][j].getStatus() == CellStatus.pressurePad)
@@ -166,6 +166,7 @@ public class Grid {
 					}
 				else
 					f = true;
+			//checking random Cell can have a rock
 			} while (this.cells[rockPositionX][rockPositionY].getHasRock()
 					|| !(this.cells[rockPositionX][rockPositionY].getStatus() == CellStatus.free)
 					|| (this.agentPosition.getX() == rockPositionX && this.agentPosition
@@ -175,8 +176,6 @@ public class Grid {
 					+ rockPositionY);
 			this.cells[rockPositionX][rockPositionY].setHasRock(true);
 		}
-		System.out.println("========\n\nThe Grid:\n");
-		this.displayGrid();
 	}
 
 	public int getNumberOfPads() {
@@ -187,6 +186,7 @@ public class Grid {
 		this.numberOfPads = numberOfPads;
 	}
 
+	//Polling the Rocks from the grid to array of rockPositions
 	public Cell[] getRockPositions() {
 		ArrayList<Cell> res = new ArrayList<>();
 		for (int i = 0; i < this.width; i++) {
@@ -203,6 +203,7 @@ public class Grid {
 		return resArr;
 	}
 
+	//Polling the Pressure Pads from the grid to array of padPositions
 	public Cell[] getPadPositions() {
 		ArrayList<Cell> res = new ArrayList<>();
 		for (int i = 0; i < this.width; i++) {
@@ -219,6 +220,7 @@ public class Grid {
 		return resArr;
 	}
 
+	//Polling the obstacles from the grid to array of obstaclePositions
 	public Cell[] getObstaclePositions() {
 		ArrayList<Cell> res = new ArrayList<>();
 		for (int i = 0; i < this.width; i++) {
@@ -235,6 +237,7 @@ public class Grid {
 		return resArr;
 	}
 
+	//Polling the Teleport from the grid to cell representing teleportPositions
 	public Cell getTeleportPosition() {
 		for (int i = 0; i < this.width; i++) {
 			for (int j = 0; j < this.height; j++) {
@@ -246,6 +249,7 @@ public class Grid {
 		return null;
 	}
 
+	//Polling the Agent from the grid to cell representing agentPositions
 	public Cell getAgentPosition() {
 		for (int i = 0; i < this.width; i++) {
 			for (int j = 0; j < this.height; j++) {
@@ -258,7 +262,10 @@ public class Grid {
 		return null;
 	}
 
+	//Printing the grid for a better visualization
 	public void displayGrid() {
+		System.out.println("========\n\nThe Grid:\n");
+
 		for (int i = 0; i < this.width; i++) {
 			System.out.print("   _  ");
 		}
@@ -277,13 +284,13 @@ public class Grid {
 					else {
 						if (this.cells[j][i].getHasRock())
 							System.out.print("|  r  ");
-						else if (this.cells[j][i] == getAgentPosition())
-							System.out.print("|  A  ");
 						else if (this.cells[j][i] == getTeleportPosition())
 							if (this.cells[j][i] == getAgentPosition())
 								System.out.print("| A T ");
 							else
 								System.out.print("|  T  ");
+						else if (this.cells[j][i] == getAgentPosition())
+							System.out.print("|  A  ");
 						else
 							System.out.print("|     ");
 					}
@@ -315,7 +322,7 @@ public class Grid {
 
 	public static void main(String[] args) {
 
-		new Grid(5, 5, 3, 3);
+//		new Grid(5, 5, 3, 3);
 
 	}
 

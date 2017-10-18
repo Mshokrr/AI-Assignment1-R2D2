@@ -1,19 +1,21 @@
 package Search;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 import Assignment1.HelpR2D2;
-import Assignment1.MyState;
-import Grid.Cell;
 import Grid.Grid;
-
+//Implementing the General Search algorithm
 public class GeneralSearch {
-
-	private Deque<Node> nodes;
+	
 	private QueuingFunction qingFunc;
-	private PriorityQueue<Node> nodesPrio = new PriorityQueue<>();
 	private Problem problem;
-	private int numberOfExpandedNodes;
+	//Queue used for BFS, DFS and Iterative Deepening
+	private Deque<Node> nodes;
+	//Queue used for Uniform Cost, Greedy and A*
+	private PriorityQueue<Node> nodesPrio = new PriorityQueue<>();
 
 	public Deque<Node> getNodes() {
 		return nodes;
@@ -43,12 +45,19 @@ public class GeneralSearch {
 		this.problem = problem;
 		this.qingFunc = qingFunc;
 		nodes = new LinkedList<Node>();
-		numberOfExpandedNodes = 0;
 	}
 
-	public Node search() {
-		Node initialNode = new Node(null, this.problem.getInitState(), 0, 0, "");
+	public GeneralSearch(Grid grid, QueuingFunction qingFunc) {
+		this.problem = new HelpR2D2(grid);
+		this.qingFunc = qingFunc;
+		nodes = new LinkedList<Node>();
+	}
 
+	//Search function traversing the tree
+	public Node search() {
+		//root node, start of the problem
+		Node initialNode = new Node(null, this.problem.getInitState(), 0, 0, "");
+		
 		if (this.qingFunc == QueuingFunction.BF
 				|| this.qingFunc == QueuingFunction.DF) {
 			nodes.addFirst(initialNode);
@@ -56,7 +65,6 @@ public class GeneralSearch {
 				Node node = nodes.pop();
 				if (this.problem.pastState(node))
 					continue; // check if state is already traversed before
-				numberOfExpandedNodes++;
 				if (problem.goalTest(node)) {
 					System.out.println("SUCCESS!!");
 					return node;
@@ -81,7 +89,6 @@ public class GeneralSearch {
 				Node node = nodesPrio.poll();
 				if (this.problem.pastState(node))
 					continue; // check if state is already traversed before
-				numberOfExpandedNodes++;
 
 				if (problem.goalTest(node)) {
 					System.out.println("SUCCESS!!");
@@ -92,11 +99,17 @@ public class GeneralSearch {
 				case UC:
 					nodesPrio = this.uniformedCost(node, nodesPrio);
 					break;
-				case Greedy:
-					nodesPrio = this.greedy(node, nodesPrio);
+				case GR1:
+					nodesPrio = this.greedy(node, nodesPrio,0);
 					break;
-				case AStar:
-					nodesPrio = this.AStar(node, nodesPrio);
+				case GR2:
+					nodesPrio = this.greedy(node, nodesPrio,1);
+					break;
+				case AS1:
+					nodesPrio = this.AStar(node, nodesPrio,0);
+					break;
+				case AS2:
+					nodesPrio = this.AStar(node, nodesPrio,1);
 					break;
 				default:
 					break;
@@ -106,202 +119,123 @@ public class GeneralSearch {
 		return null;
 	}
 
+	//Breadth First Search Node Expansion
 	public Deque<Node> BFS(Deque<Node> nodes, Node node) {
 		ArrayList<Node> children = this.problem.Expand(node);
-		// int i = 0;
 		for (Node childNode : children) {
-			// System.out.println(i++);
 			nodes.addLast(childNode);
 		}
 		return nodes;
 	}
 
+	//Depth First Search Node Expansion
 	public Deque<Node> DFS(Deque<Node> nodes, Node node) {
 		ArrayList<Node> children = this.problem.Expand(node);
-		// int i = 0;
 		for (Node childNode : children) {
-			// System.out.println(i++);
 			nodes.addFirst(childNode);
 		}
 		return nodes;
 	}
 
+	//Iterative Deepening Search Node Expansion
 	public Node IDS(Deque<Node> nodes, Node intialNode) {
-		int counter = 0;
+		int searchDepth = 0;
+		//Starts with a depth of 0
 		do {
 			nodes.add(intialNode);
 			while (!nodes.isEmpty()) {
-				System.out.println("Counter" + counter);
 				Node node = nodes.pop();
 				if (this.problem.pastState(node))
 					continue; // check if state is already traversed before
-				numberOfExpandedNodes++;
 				if (problem.goalTest(node)) {
 					System.out.println("SUCCESS!!");
 					return node;
 				}
-				nodes = IDS(nodes, node, counter);
-				System.out.println("IDS");
+				//Do a search to a certain depth in this iteration
+				nodes = IDS(nodes, node, searchDepth);
 			}
-			counter++;
+			//increase depth for next iteration
+			searchDepth++;
+			//reset states to start fresh
 			this.problem.clearPastState();
+			//loops to infinity or finding a solution
 		} while (true);
 	}
 
-	public Deque<Node> IDS(Deque<Node> nodes, Node node, int counter) {
+	//Depth First Search Limited Depth Node Expansion
+	public Deque<Node> IDS(Deque<Node> nodes, Node node, int depth) {
 		ArrayList<Node> children = this.problem.Expand(node);
-		// int i = 0;
 		for (Node childNode : children) {
-			// System.out.println(i++);
-			// System.out.println(childNode.getPathCost());
-			if (counter < childNode.getDepth())
+			if (depth < childNode.getDepth())
 				return nodes;
 			nodes.addFirst(childNode);
 		}
-		// System.out.println("size"+ nodes.size());
 		return nodes;
 	}
 
+	//Uniform Cost Search Node Expansion
 	public PriorityQueue<Node> uniformedCost(Node node,
 			PriorityQueue<Node> nodes) {
 		ArrayList<Node> children = this.problem.Expand(node);
-		// int i = 0;
 		for (Node childNode : children) {
-			// System.out.println(i++);
 			nodes.add(childNode);
 		}
 		return nodes;
 	}
 
-	public PriorityQueue<Node> greedy(Node node, PriorityQueue<Node> nodes) {
+	//Greedy Search Node Expansion, n is used to pick between the 2 heuristic functions
+	public PriorityQueue<Node> greedy(Node node, PriorityQueue<Node> nodes, int n) {
 		ArrayList<Node> children = this.problem.Expand(node);
-		// int i = 0;
 		for (Node childNode : children) {
-			// System.out.println(i++);
-			int heuristicValue = node.getCurrentState().heuristic();
+			int heuristicValue = node.getCurrentState().heuristic(n);
 			childNode.setOrder(heuristicValue);
 			nodes.add(childNode);
 		}
 		return nodes;
 	}
 
-	public PriorityQueue<Node> AStar(Node node, PriorityQueue<Node> nodes) {
+	//A* Search Node Expansion, n is used to pick between the 2 heuristic functions
+	public PriorityQueue<Node> AStar(Node node, PriorityQueue<Node> nodes, int n) {
 		ArrayList<Node> children = this.problem.Expand(node);
-		// int i = 0;
 		for (Node childNode : children) {
-			// System.out.println(i++);
-			int heuristicValue = 3;
+			int heuristicValue = node.getCurrentState().heuristic(n);
 			childNode.setOrder(childNode.getPathCost() + heuristicValue);
 			nodes.add(childNode);
 		}
 		return nodes;
 	}
 
-	public static void main(String[] args) {
-		Cell currentPosition = new Cell();
-		currentPosition.setX(0);
-		currentPosition.setY(3);
-
-		Cell rockPosition = new Cell();
-		rockPosition.setX(1);
-		rockPosition.setY(0);
-
-		Cell rockPosition2 = new Cell();
-		rockPosition2.setX(1);
-		rockPosition2.setY(1);
-
-		Cell rockPosition3 = new Cell();
-		rockPosition3.setX(2);
-		rockPosition3.setY(3);
-
-		Cell rockPosition4 = new Cell();
-		rockPosition4.setX(3);
-		rockPosition4.setY(3);
-
-		Cell[] rockPositions = new Cell[3];
-		rockPositions[0] = rockPosition;
-		rockPositions[1] = rockPosition2;
-		rockPositions[2] = rockPosition3;
-		// rockPositions[2] = rockPosition4;
-
-		MyState initState = new MyState(currentPosition, rockPositions.length,
-				rockPositions, 0);
-
-		Cell teleport = new Cell();
-		teleport.setX(4);
-		teleport.setY(3);
-
-		Cell obstacle = new Cell();
-		obstacle.setX(0);
-		obstacle.setY(2);
-
-		Cell obstacle1 = new Cell();
-		obstacle1.setX(4);
-		obstacle1.setY(2);
-
-		Cell[] obstacles = new Cell[2];
-		obstacles[0] = obstacle;
-		obstacles[1] = obstacle1;
-
-		Cell pad = new Cell();
-		pad.setX(0);
-		pad.setY(0);
-
-		Cell pad1 = new Cell();
-		pad1.setX(3);
-		pad1.setY(1);
-
-		Cell pad2 = new Cell();
-		pad2.setX(4);
-		pad2.setY(1);
-
-		Cell pad3 = new Cell();
-		pad3.setX(4);
-		pad3.setY(1);
-
-		Cell[] pads = new Cell[3];
-		pads[0] = pad;
-		pads[1] = pad1;
-		pads[2] = pad2;
-		// pads[2] = pad3;
-
-		String[] ops = new String[4];
-		MyState[] stateSpace = new MyState[4];
-
-		// HelpR2D2 problemR2D2 = new HelpR2D2(ops, initState, stateSpace,
-		// teleport, obstacles, pads, 5, 5);
-
-		HelpR2D2 problemR2D2 = new HelpR2D2(new Grid(7, 5, 4, 2));
-
-//		for (Cell rockk : ((MyState) ((Problem) problemR2D2).getInitState())
-//				.getRocksPositions()) {
-//			System.out.println("ROCK: " + rockk.getX() + ", " + rockk.getY());
-//		}
-//		for (Cell padd : problemR2D2.getPadsPositions()) {
-//			System.out.println("Pad: " + padd.getX() + ", " + padd.getY());
-//		}
-//
-//		for (Cell obs : problemR2D2.getObstaclesPositions()) {
-//			System.out.println("Obstacle: " + obs.getX() + ", " + obs.getY());
-//		}
-
-		GeneralSearch gs = new GeneralSearch(problemR2D2, QueuingFunction.BF);
+	//Search Method as required takes a grid and a queuing strategy and boolean for visualizing or not
+	public static void search(Grid grid, QueuingFunction strategy, boolean visualization){
+		
+		if(visualization)
+			grid.displayGrid();
+		//Initialize a general search problem
+		GeneralSearch gs = new GeneralSearch(grid,strategy);
+		//Performs search
 		Node n = gs.search();
+		//Checks for a solution
 		if (n != null)
-			System.out.println("Max Depth: " + n.getDepth());
+			System.out.println("Solution Depth: " + n.getPathCost());
 		else
 			System.out.println("No Solution");
-		Deque<String> path = new LinkedList<String>();
-		System.out.println("Expanded Nodes: " + gs.numberOfExpandedNodes);
-		while (n != null) {
-			path.addFirst(n.getOperator() + " "
-					+ ((MyState) n.getCurrentState()).getUnactivatedPads());
-			n = n.getParent();
+		System.out.println("Expanded Nodes: " + ((HelpR2D2)gs.getProblem()).getNumberOfExpandedNodes());
 
+		//Displaying Solution Path from Start to End
+		Deque<String> path = new LinkedList<String>();
+		while (n != null) {
+			if(n.getOperator() != null)
+				path.addFirst(n.getOperator());
+			n = n.getParent();
 		}
 		while (!path.isEmpty()) {
 			System.out.print(path.pop() + "->");
 		}
-
+	}
+	
+	public static void main(String[] args) {
+		
+		search(new Grid(5,4,3,1), QueuingFunction.BF, true);
+		
 	}
 }

@@ -1,5 +1,6 @@
 package Search;
 
 public abstract class State {
-	public abstract int heuristic ();
+	//Abstracting heuristic function for a state
+	public abstract int heuristic(int n);
 }

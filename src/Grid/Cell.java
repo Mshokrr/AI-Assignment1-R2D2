@@ -47,7 +47,8 @@ public class Cell {
 	public void setY(int y) {
 		this.y = y;
 	}
-
+	
+	// A Cell can have obstacle, pressurePad, free, teleport. Also, some combinations can support having a rock 
 	public Cell(CellStatus status, Boolean hasRock){
 		this.status = status;
 		this.hasRock = hasRock;
@@ -59,6 +60,7 @@ public class Cell {
 		this.name = "";
 	}
 	
+	//A pressure pad is active if and only if it has a rock on top of a pressure pad
 	public boolean isActivated(){
 		return (this.status == CellStatus.pressurePad && this.hasRock == true);
 	}
