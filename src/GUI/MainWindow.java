@@ -3,10 +3,13 @@ package GUI;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Deque;
 
 import javax.swing.*;
 
 import Grid.*;
+import Search.GeneralSearch;
+import Search.QueuingFunction;
 
 public class MainWindow extends JFrame{
 	
@@ -16,6 +19,7 @@ public class MainWindow extends JFrame{
 	private static final long serialVersionUID = 1L;
 	JPanel mainPanel;
 	Grid grid;
+	protected Deque<Grid> priview;
 	
 	public MainWindow(){
 		
@@ -85,8 +89,7 @@ public class MainWindow extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				priview = GeneralSearch.search(grid, QueuingFunction.BF, true);
 			}
 		});
 		
@@ -105,7 +108,16 @@ public class MainWindow extends JFrame{
 		JButton aStar2 = new JButton("A* 2");
 		aStar2.setBounds(350, 450, 100, 30);	
 		JButton next = new JButton("Next");
-		next.setBounds(500, 350, 100, 30);		
+		next.setBounds(500, 350, 100, 30);	
+		
+		next.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				drawGrid(priview.pop());
+				System.out.println("xxxxx");
+			}
+		});
 		mainPanel.add(df);
 		mainPanel.add(bf);
 		mainPanel.add(id);
@@ -128,6 +140,7 @@ public class MainWindow extends JFrame{
 	}
 	
 	public void drawGrid(Grid g){
+		this.mainPanel.removeAll();
 		this.grid = g;
 		for (int i = 0; i < grid.getWidth(); i++){
 			for (int j = 0; j < grid.getHeight(); j++){

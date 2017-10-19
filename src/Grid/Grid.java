@@ -62,6 +62,8 @@ public class Grid {
 		this.height = height;
 		this.agentPosition = agent;
 		this.cells = new Cell[this.width][this.height];
+		this.cells[agent.getX()][agent.getY()] = agent;
+
 		for (Cell c : obstacles) {
 			int x = c.getX();
 			int y = c.getY();
@@ -70,9 +72,18 @@ public class Grid {
 		for (Cell c : pads) {
 			int x = c.getX();
 			int y = c.getY();
-			cells[x][y] = c;
+			if (cells[x][y] != null)
+				cells[x][y].setStatus(c.getStatus());
+			else
+				cells[x][y] = c;
 		}
 
+		if (this.cells[teleport.getX()][teleport.getY()] == null)
+			this.cells[teleport.getX()][teleport.getY()] = teleport;
+		else
+			this.cells[teleport.getX()][teleport.getY()]
+					.setStatus(CellStatus.teleport);
+		
 		for (Cell c : rocks) {
 			int x = c.getX();
 			int y = c.getY();
@@ -80,14 +91,6 @@ public class Grid {
 				c.setStatus(cells[x][y].getStatus());
 			cells[x][y] = c;
 		}
-
-		this.cells[agent.getX()][agent.getY()] = agent;
-
-		if (this.cells[teleport.getX()][teleport.getY()] == null)
-			this.cells[teleport.getX()][teleport.getY()] = teleport;
-		else
-			this.cells[teleport.getX()][teleport.getY()]
-					.setStatus(CellStatus.teleport);
 
 		for (int i = 0; i < this.width; i++) {
 			for (int j = 0; j < this.height; j++) {
@@ -365,6 +368,8 @@ public class Grid {
 						System.out.print("|  T  ");
 				} else if (this.cells[j][i] == getAgentPosition())
 					System.out.print("|  A  ");
+				else if (this.cells[j][i].getHasRock())
+					System.out.print("|  r  ");
 				else
 					System.out.print("|     ");
 			}
