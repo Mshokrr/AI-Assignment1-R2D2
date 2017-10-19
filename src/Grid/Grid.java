@@ -348,7 +348,9 @@ public class Grid {
 						&& (this.cells[j][i].getHasRock()))
 					System.out.print("| r p ");
 				else if (this.cells[j][i].getStatus() == CellStatus.pressurePad) {
-					if (this.cells[j][i] == getAgentPosition())
+					if (this.cells[j][i].getX() == getAgentPosition().getX()
+							&& this.cells[j][i].getY() == getAgentPosition()
+									.getY())
 						System.out.print("| A p ");
 					else
 						System.out.print("|  p  ");

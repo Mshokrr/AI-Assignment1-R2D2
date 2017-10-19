@@ -13,7 +13,7 @@ public class Test {
 			try {
 				Grid g = Grid.genGrid();
 				GeneralSearch.search(g, QueuingFunction.DF, false);
-				GeneralSearch.search(g, QueuingFunction.BF, false);
+				GeneralSearch.search(g, QueuingFunction.BF, true);
 				GeneralSearch.search(g, QueuingFunction.ID, false);
 				GeneralSearch.search(g, QueuingFunction.GR1, false);
 				GeneralSearch.search(g, QueuingFunction.AS1, false);
