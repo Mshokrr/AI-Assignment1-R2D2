@@ -20,6 +20,26 @@ public class MainWindow extends JFrame{
 	JPanel mainPanel;
 	Grid grid;
 	protected Deque<Grid> priview;
+	private JButton bf;
+	private JButton id;
+	private JButton uc;
+	private JButton greedy1;
+	private JButton greedy2;
+	private JButton aStar1;
+	private JButton aStar2;
+	private JButton next;
+	private JButton df;
+	private Cell rock;
+	private Cell agent;
+	private Cell teleport;
+	private Cell pad;
+	private JLabel padLabel;
+	private JLabel teleportLabel;
+	private JLabel agentLabel;
+	private JLabel obsLabel;
+	private Cell obs;
+	private JLabel rockLabel;
+	private JLabel path;
 	
 	public MainWindow(){
 		
@@ -34,58 +54,54 @@ public class MainWindow extends JFrame{
 		mainPanel.setLayout(null);
 		mainPanel.setBackground(Color.black);
 		
-		Cell obs = new Cell();
+		obs = new Cell();
 		obs.setBounds(20, 20, 50, 50);
 		obs.createObstacle();
-		mainPanel.add(obs);
-		JLabel obsLabel = new JLabel("Obs");
+		obsLabel = new JLabel("Obs");
 		obsLabel.setForeground(Color.white);
 		obsLabel.setBounds(20, 80, 50, 30);
-		mainPanel.add(obsLabel);
 		
-		Cell pad = new Cell();
+		pad = new Cell();
 		pad.setBounds(90, 20, 50, 50);
 		pad.createPad();
-		mainPanel.add(pad);
-		JLabel padLabel = new JLabel("Pad");
+		padLabel = new JLabel("Pad");
 		padLabel.setForeground(Color.white);
 		padLabel.setBounds(90, 80, 50, 30);
-		mainPanel.add(padLabel);
 		
-		Cell teleport = new Cell();
+		teleport = new Cell();
 		teleport.setBounds(150, 20, 50, 50);
 		teleport.createTeleport();
-		mainPanel.add(teleport);
-		JLabel teleportLabel = new JLabel("Tele");
+		teleportLabel = new JLabel("Tele");
 		teleportLabel.setForeground(Color.white);
 		teleportLabel.setBounds(150, 80, 50, 30);
-		mainPanel.add(teleportLabel);
 		
-		Cell agent = new Cell();
+		agent = new Cell();
 		agent.setBounds(220, 20, 50, 50);
 		agent.addAgent();
-		mainPanel.add(agent);
-		JLabel agentLabel = new JLabel("Agent");
+		agentLabel = new JLabel("Agent");
 		agentLabel.setForeground(Color.white);
 		agentLabel.setBounds(220, 80, 50, 30);
-		mainPanel.add(agentLabel);
 		
-		Cell rock = new Cell();
+		rock = new Cell();
 		rock.setBounds(290, 20, 50, 50);
 		rock.addRock();
-		mainPanel.add(rock);
-		JLabel rockLabel = new JLabel("Rock");
+		rockLabel = new JLabel("Rock");
 		rockLabel.setForeground(Color.white);
 		rockLabel.setBounds(290, 80, 50, 30);
-		mainPanel.add(rockLabel);
-				
-		
-		this.drawGrid(Grid.genGrid());
-		grid.displayGrid();
-		
-		JButton df = new JButton("DF");
+						
+		df = new JButton("DF");
 		df.setBounds(350, 100, 100, 30);
 		df.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				priview = GeneralSearch.search(grid, QueuingFunction.DF, true);
+			}
+		});
+		
+		bf = new JButton("BF");
+		bf.setBounds(350, 150, 100, 30);
+		bf.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -93,47 +109,85 @@ public class MainWindow extends JFrame{
 			}
 		});
 		
-		JButton bf = new JButton("BF");
-		bf.setBounds(350, 150, 100, 30);
-		JButton id = new JButton("ID");
+		id = new JButton("ID");
 		id.setBounds(350, 200, 100, 30);
-		JButton uc = new JButton("UC");
-		uc.setBounds(350, 250, 100, 30);
-		JButton greedy1 = new JButton("Greedy 1");
-		greedy1.setBounds(350, 300, 100, 30);
-		JButton greedy2 = new JButton("Greedy 2");
-		greedy2.setBounds(350, 350, 100, 30);
-		JButton aStar1 = new JButton("A* 1");
-		aStar1.setBounds(350, 400, 100, 30);
-		JButton aStar2 = new JButton("A* 2");
-		aStar2.setBounds(350, 450, 100, 30);	
-		JButton next = new JButton("Next");
-		next.setBounds(500, 350, 100, 30);	
+		id.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				priview = GeneralSearch.search(grid, QueuingFunction.ID, true);
+			}
+		});
 		
+		uc = new JButton("UC");
+		uc.setBounds(350, 250, 100, 30);
+		uc.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				priview = GeneralSearch.search(grid, QueuingFunction.UC, true);
+			}
+		});
+		
+		greedy1 = new JButton("Greedy 1");
+		greedy1.setBounds(350, 300, 100, 30);
+		greedy1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				priview = GeneralSearch.search(grid, QueuingFunction.GR1, true);
+			}
+		});
+		
+		greedy2 = new JButton("Greedy 2");
+		greedy2.setBounds(350, 350, 100, 30);
+		greedy2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				priview = GeneralSearch.search(grid, QueuingFunction.GR2, true);
+			}
+		});
+		
+		aStar1 = new JButton("A* 1");
+		aStar1.setBounds(350, 400, 100, 30);
+		aStar1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				priview = GeneralSearch.search(grid, QueuingFunction.AS1, true);
+			}
+		});
+		
+		aStar2 = new JButton("A* 2");
+		aStar2.setBounds(350, 450, 100, 30);	
+		aStar2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				priview = GeneralSearch.search(grid, QueuingFunction.AS2, true);
+			}
+		});
+		
+		next = new JButton("Next");
+		next.setBounds(500, 350, 100, 30);	
 		next.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				drawGrid(priview.pop());
-				System.out.println("xxxxx");
+				if(priview.isEmpty())
+					next.setEnabled(false);
 			}
 		});
-		mainPanel.add(df);
-		mainPanel.add(bf);
-		mainPanel.add(id);
-		mainPanel.add(uc);
-		mainPanel.add(greedy1);
-		mainPanel.add(greedy2);
-		mainPanel.add(aStar1);
-		mainPanel.add(aStar2);
-		mainPanel.add(next);
 		
-		JLabel path = new JLabel("Veeeeryyyyy looooong teeeeeeeeext!");
+		path = new JLabel("Click on algorithm to get a solution");
 		path.setBounds(50, 500, 550, 50);
 		path.setForeground(Color.white);
 		
+		this.drawGrid(Grid.genGrid());
+
 		mainPanel.add(path);
-		this.add(mainPanel);
 		this.validate();
 		this.repaint();
 		
@@ -188,6 +242,26 @@ public class MainWindow extends JFrame{
 				mainPanel.add(cell);
 			}
 		}
+		this.add(mainPanel);
+		mainPanel.add(agentLabel);
+		mainPanel.add(rockLabel);
+		mainPanel.add(rock);
+		mainPanel.add(agent);
+		mainPanel.add(teleportLabel);
+		mainPanel.add(teleport);
+		mainPanel.add(padLabel);
+		mainPanel.add(pad);
+		mainPanel.add(obsLabel);
+		mainPanel.add(obs);
+		mainPanel.add(df);
+		mainPanel.add(bf);
+		mainPanel.add(id);
+		mainPanel.add(uc);
+		mainPanel.add(greedy1);
+		mainPanel.add(greedy2);
+		mainPanel.add(aStar1);
+		mainPanel.add(aStar2);
+		mainPanel.add(next);
 		this.validate();
 		this.repaint();
 	}

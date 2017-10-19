@@ -272,7 +272,9 @@ public class GeneralSearch {
 			while (!grids.isEmpty()) {
 				grids.pop().displayGrid();
 			}
-
+		
+		grids1.pop();
+		
 		return grids1;
 	}
 
