@@ -21,7 +21,7 @@ not_inst(Var):-
 
 agent_helper(I,J,S,M):-
   \+not_inst(S),
-  agent(I,J,S,M).
+agent(I,J,S,M).
 
 agent_helper(I,J,S,M):-
   not_inst(S),
