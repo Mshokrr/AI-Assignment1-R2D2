@@ -83,14 +83,11 @@ rock(I, J, result(right, S)):-
 
 rock(I, J, result(left, S)):-
   move_rock(I, J, 1, 0, S),
-  N is I+2,
+  N is I+1,
   rock(N,J,S).
 
 rock(I, J, result(_, S)):-
-  \+move_rock(I, J, 1, 0, S),
-  \+move_rock(I, J, 11, 0, S),
-  \+move_rock(I, J, 0, -1, S),
-  \+move_rock(I, J, 0, 1, S),
+  \+ agent(I, J, S) ,
   rock(I,J,S).
   
 move_rock(I, J, K, L, S):-
