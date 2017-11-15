@@ -1,15 +1,19 @@
-pad(2,0).
+pad(0,0).
+pad(1,1).
 
-teleport(0,0).
-obstacle(0,2).
+teleport(3,0).
+obstacle(1,0).
+obstacle(2,0).
 
 w(0).
 w(1).
 w(2).
+w(3).
 
 h(0).
 h(1).
 h(2).
+h(3).
 
 run(Q):-
   run_helper(Q,3).
@@ -26,7 +30,7 @@ run_helper2(Q, I, R):-
   I1 is I +1,
   run_helper(Q,I1).
 
-agent(2,2,s0).
+agent(0,1,s0).
 
 agent(I, J, result(down,S)):-
   move_agent(I,J,0,-1, S),
@@ -64,7 +68,8 @@ move_agent(I, J, K, L, S):-
   w(N1),
   h(N2).
 
-rock(2,1,s0).
+rock(0,2,s0).
+rock(2,2,s0).
 
 rock(I, J, result(down, S)):-
   move_rock(I, J, 0, -1, S),
@@ -86,8 +91,17 @@ rock(I, J, result(left, S)):-
   N is I+1,
   rock(N,J,S).
 
-rock(I, J, result(_, S)):-
-  \+ agent(I, J, S) ,
+rock(I, J, result(down, S)):-
+  \+ move_rock(I, J, 0, -1, S) ,
+  rock(I,J,S).
+rock(I, J, result(up, S)):-
+  \+ move_rock(I, J, 0, 1, S),
+  rock(I,J,S).
+rock(I, J, result(right, S)):-
+  \+ move_rock(I, J, -1, 0, S),
+  rock(I,J,S).
+rock(I, J, result(left, S)):-
+  \+ move_rock(I, J, 1, 0, S),
   rock(I,J,S).
   
 move_rock(I, J, K, L, S):-
@@ -107,3 +121,4 @@ move_rock(I, J, K, L, S):-
   %%N2 is J-L,
   %%\+agent(N1,N2,S),
   %%rock(I,J,S).
+
