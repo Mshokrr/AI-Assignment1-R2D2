@@ -417,7 +417,7 @@ public class Grid {
 		for (int i = 0; i < this.height; i++) {
 			for (int j = 0; j < this.width; j++) {
 				if (this.getAgentPosition() == this.cells[j][i]) {
-					pw.println("agent("+j+","+i+")");
+					pw.println("agent("+j+","+i+ ",s0)");
 				}
 				switch(this.cells[j][i].getStatus()) {
 					case obstacle:
@@ -432,7 +432,7 @@ public class Grid {
 					default:
 				}
 				if (this.cells[j][i].getHasRock()) {
-					pw.println("rock("+j+","+i+")");
+					pw.println("rock("+j+","+i+",s0)");
 				}
 			}
 		}
