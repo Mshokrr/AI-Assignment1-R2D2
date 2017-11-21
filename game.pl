@@ -1,11 +1,14 @@
 %%pad intial positions decalared
-pad(0,0).
-pad(1,1).
+%%pad(0,0).
+%%pad(2,0)
+pad(2,0).
+pad(0,2).
 
 %%teleport intial positions decalared
-teleport(1,2).
-obstacle(1,0).
-obstacle(2,0).
+%%teleport(1,1).
+%%obstacle(1,0).
+teleport(0,0).
+obstacle(0,1).
 
 %%grid width declaration every predict defines a column
 w(0).
@@ -38,7 +41,7 @@ run_helper2(Q, I, R):-
   run_helper(Q,I1).
 
 %%agent intial position at situation s0
-agent(0,1,s0).
+agent(2,2,s0).
 
 %%agent fluent axioms to move the agent they check if an agent can be in position I,J as a result of an action A in a previous situation S
 %%the possible actions are either down, up, right, left
@@ -89,8 +92,10 @@ move_agent(I, J, K, L, S):-
   h(N2).
 
 %%rock intial position at situation s0
-rock(0,2,s0).
-rock(2,2,s0).
+%%rock(0,1,s0).
+%%rock(2,1,s0).
+rock(2,1,s0).
+rock(1,2,s0).
 
 %%rock fluent axioms to move the rock they check if an agent can be in position I,J as a result of an action A in a previous situation S
 %%the possible actions are either down, up, right, left
@@ -101,40 +106,40 @@ rock(I, J, result(down, S)):-
   N is J-1,
   rock(I,N,S).
 
-%%Predicate for agent to be in a position I,J as result of up in a previous situation S
+%%Predicate for rock to be in a position I,J as result of up in a previous situation S
 rock(I, J, result(up, S)):-
   move_rock(I, J, 0, 1, S),
   N is J+1,
   rock(I,N,S).
 
-%%Predicate for agent to be in a position I,J as result of right in a previous situation S
+%%Predicate for rock to be in a position I,J as result of right in a previous situation S
 rock(I, J, result(right, S)):-
   move_rock(I, J, -1, 0, S),
   N is I-1,
   rock(N,J,S).
 
-%%Predicate for agent to be in a position I,J as result of left in a previous situation S
+%%Predicate for rock to be in a position I,J as result of left in a previous situation S
 rock(I, J, result(left, S)):-
   move_rock(I, J, 1, 0, S),
   N is I+1,
   rock(N,J,S).
 
-%%Predicate for agent PRESISTENCE to be in previous position I,J as result of a failed down action in a previous situation S
+%%Predicate for rock PRESISTENCE to be in previous position I,J as result of a failed down action in a previous situation S
 rock(I, J, result(down, S)):-
   \+ move_rock(I, J, 0, -1, S) ,
   rock(I,J,S).
   
-%%Predicate for agent PRESISTENCE to be in previous position I,J as result of a failed up action in a previous situation S
+%%Predicate for rock PRESISTENCE to be in previous position I,J as result of a failed up action in a previous situation S
 rock(I, J, result(up, S)):-
   \+ move_rock(I, J, 0, 1, S),
   rock(I,J,S).
 
-%%Predicate for agent PRESISTENCE to be in previous position I,J as result of a failed right action in a previous situation S
+%%Predicate for rock PRESISTENCE to be in previous position I,J as result of a failed right action in a previous situation S
 rock(I, J, result(right, S)):-
   \+ move_rock(I, J, -1, 0, S),
   rock(I,J,S).
 
-%%Predicate for agent PRESISTENCE to be in previous position I,J as result of a failed left action in a previous situation S
+%%Predicate for rock PRESISTENCE to be in previous position I,J as result of a failed left action in a previous situation S
 rock(I, J, result(left, S)):-
   \+ move_rock(I, J, 1, 0, S),
   rock(I,J,S).
@@ -155,3 +160,7 @@ move_rock(I, J, K, L, S):-
   \+pad(N3,N4),
   w(I),
   h(J).
+  
+  
+%% Query to run the file.
+%% run((agent(1,1,S),rock(0,0,S),rock(2,0,S))).
