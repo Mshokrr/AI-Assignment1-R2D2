@@ -1,5 +1,8 @@
 package Grid;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Grid {
@@ -395,6 +398,46 @@ public class Grid {
 		// System.out.println();
 		// }
 		// }
+	}
+	
+	public void getPrologFile() throws IOException {
+		FileWriter fw = new FileWriter("grid.pl");
+		PrintWriter pw = new PrintWriter(fw);
+		pw.println("%== Width and Height");
+		pw.println();
+		for (int i = 0; i < this.height; i++) {
+			pw.println("h("+i+")");
+		}
+		pw.println();
+		for (int i = 0; i < this.width; i++) {
+			pw.println("w("+i+")");
+		}
+		pw.println();
+		pw.println("%== Teleport and agent positions");
+		for (int i = 0; i < this.height; i++) {
+			for (int j = 0; j < this.width; j++) {
+				if (this.getAgentPosition() == this.cells[j][i]) {
+					pw.println("agent("+j+","+i+")");
+				}
+				switch(this.cells[j][i].getStatus()) {
+					case obstacle:
+						pw.println("obstacle("+j+","+i+")");
+						break;
+					case teleport:
+						pw.println("teleport("+j+","+i+")");
+						break;
+					case pressurePad:
+						pw.println("pad("+j+","+i+")");
+						break;
+					default:
+				}
+				if (this.cells[j][i].getHasRock()) {
+					pw.println("rock("+j+","+i+")");
+				}
+			}
+		}
+		pw.close();
+		
 	}
 
 }
