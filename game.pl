@@ -1,14 +1,10 @@
 %%pad intial positions decalared
-%%pad(0,0).
-%%pad(2,0)
 pad(2,0).
-pad(0,2).
+pad(0,0).
 
 %%teleport intial positions decalared
-%%teleport(1,1).
-%%obstacle(1,0).
-teleport(0,0).
-obstacle(0,1).
+teleport(1,1).
+obstacle(1,0).
 
 %%grid width declaration every predict defines a column
 w(0).
@@ -41,7 +37,7 @@ run_helper2(Q, I, R):-
   run_helper(Q,I1).
 
 %%agent intial position at situation s0
-agent(2,2,s0).
+agent(1,2,s0).
 
 %%agent fluent axioms to move the agent they check if an agent can be in position I,J as a result of an action A in a previous situation S
 %%the possible actions are either down, up, right, left
@@ -92,10 +88,8 @@ move_agent(I, J, K, L, S):-
   h(N2).
 
 %%rock intial position at situation s0
-%%rock(0,1,s0).
-%%rock(2,1,s0).
+rock(0,1,s0).
 rock(2,1,s0).
-rock(1,2,s0).
 
 %%rock fluent axioms to move the rock they check if an agent can be in position I,J as a result of an action A in a previous situation S
 %%the possible actions are either down, up, right, left
